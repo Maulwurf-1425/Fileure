@@ -30,15 +30,15 @@ Start by downloading the **"fileure"** folder. Inside, you will find the two cor
 * `server.js`
 
 ### 2. Prerequisites
-Before launching, ensure you have **Next.js** installed on your system. If you haven't done this yet, you can download it here:
+Before launching, ensure you have **node.js** installed on your system. If you haven't done this yet, you can download it here:
 
 > [!TIP]
-> **Download Link:** [Click here to download Next.js](https://nodejs.org/en/download)
+> **Download Link:** [Click here to download node.js](https://nodejs.org/en/download)
 
 ---
 
 ### 3. Installation & Launch
-Once the folder is ready and Next.js is installed, follow these steps to start the server:
+Once the folder is ready and node.js is installed, follow these steps to start the server:
 
 1.  **Open Explorer:** Navigate to your `fileure` folder.
 2.  **Open Command Prompt:** Click into the **address bar** at the top of the window, type `cmd`, and press **Enter**.
