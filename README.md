@@ -55,3 +55,31 @@ If the command was successful, you should see a confirmation message in the term
 <img width="365" height="114" alt="image" src="https://github.com/user-attachments/assets/7d418bfb-ef7f-453d-bf80-8d493453c5fc" />
 
 Now, open your web browser and navigate to the specified localhost address. Enjoy your practical, attractive, and innovative alternative to Microsoft Explorer!
+
+# Never touch the Explorer again?
+
+To avoid ever having to open Windows Explorer again, you can create a shortcut on your desktop.
+
+1. **Open Notepad** and enter this code:
+
+```bash
+@echo off
+cd /d "path where you saved the fileure.bat file"
+start http://localhost:3000
+node server.js
+pause
+```
+
+2. Then **save it as a .bat** file (fileure.bat).
+
+Next, 3. **go to your desktop**, 4. **right-click, and select "New"** and 5. **then "Shortcut".** 
+
+6. **Link the shortcut to your .bat** file and save it.
+
+# Standard Icon too boring?
+
+If you'd like a nicer icon, you can download one. We use [Lucide Icons](https://lucide.dev/) (The icon of Fliegere is called "folder-tree"). You can download an icon there (preferably as an SVG) and then convert it to an .ico file. We used [Convertio](https://convertio.co/svg-ico/) for this.
+
+Once you've downloaded it, go to Properties and select "Change Icon" (if a message appears, click OK). Now you can find and select the icon.
+
+## DONE - Never again Microsoft Explorer!
