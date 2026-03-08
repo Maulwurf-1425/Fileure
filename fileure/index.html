@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -453,59 +453,59 @@
     Files
   </div>
 
-  <button class="nav-btn" id="btnBack" onclick="goBack()" title="Zurück" disabled>
+  <button class="nav-btn" id="btnBack" onclick="goBack()" title="Back" disabled>
     <i data-lucide="arrow-left"></i>
   </button>
-  <button class="nav-btn" id="btnFwd" onclick="goForward()" title="Vor" disabled>
+  <button class="nav-btn" id="btnFwd" onclick="goForward()" title="Forward" disabled>
     <i data-lucide="arrow-right"></i>
   </button>
-  <button class="nav-btn" onclick="goUp()" title="Ebene höher">
+  <button class="nav-btn" onclick="goUp()" title="Go Up">
     <i data-lucide="arrow-up"></i>
   </button>
-  <button class="nav-btn" onclick="refresh()" title="Aktualisieren">
+  <button class="nav-btn" onclick="refresh()" title="Refresh">
     <i data-lucide="refresh-cw"></i>
   </button>
 
   <div class="pathbar" id="pathbar" onclick="activatePath()">
     <span class="path-ico"><i data-lucide="folder"></i></span>
     <div class="path-crumbs" id="pathCrumbs"></div>
-    <input id="pathInput" type="text" placeholder="Pfad eingeben…"
+    <input id="pathInput" type="text" placeholder="Enter path…"
            onkeydown="pathKey(event)" onblur="deactivatePath()" />
   </div>
 
-  <button class="icon-btn" id="btnSearch" onclick="toggleSearch()" title="Suche">
+  <button class="icon-btn" id="btnSearch" onclick="toggleSearch()" title="Search">
     <i data-lucide="search"></i>
   </button>
   <div class="topbar-sep"></div>
   <div style="position:relative;">
-    <button class="icon-btn" id="btnNew" onclick="toggleNewMenu(event)" title="Neu erstellen" style="width:auto;padding:0 10px;gap:5px;font-size:12px;font-weight:500;">
-      <i data-lucide="plus"></i> Neu
+    <button class="icon-btn" id="btnNew" onclick="toggleNewMenu(event)" title="Create New" style="width:auto;padding:0 10px;gap:5px;font-size:12px;font-weight:500;">
+      <i data-lucide="plus"></i> New
     </button>
     <div id="newMenu" style="display:none;position:absolute;top:36px;left:0;z-index:200;
       background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--radius);
       box-shadow:var(--shadow);min-width:180px;padding:4px;">
-      <div class="ctx-it" onclick="promptNew('folder')"><i data-lucide="folder-plus"></i> Neuer Ordner</div>
-      <div class="ctx-it" onclick="promptNew('file')"><i data-lucide="file-plus"></i> Neue Datei</div>
+      <div class="ctx-it" onclick="promptNew('folder')"><i data-lucide="folder-plus"></i> New Folder</div>
+      <div class="ctx-it" onclick="promptNew('file')"><i data-lucide="file-plus"></i> New File</div>
     </div>
   </div>
   <div class="topbar-sep"></div>
   <div class="view-toggle">
-    <button class="icon-btn active" id="btnVList" onclick="setView('list')" title="Listenansicht">
+    <button class="icon-btn active" id="btnVList" onclick="setView('list')" title="List View">
       <i data-lucide="list"></i>
     </button>
-    <button class="icon-btn" id="btnVGrid" onclick="setView('grid')" title="Gitteransicht">
+    <button class="icon-btn" id="btnVGrid" onclick="setView('grid')" title="Grid View">
       <i data-lucide="layout-grid"></i>
     </button>
   </div>
   <div class="topbar-sep"></div>
-  <button class="icon-btn" id="btnHidden" onclick="toggleHidden()" title="Versteckte Dateien">
+  <button class="icon-btn" id="btnHidden" onclick="toggleHidden()" title="Hidden Files">
     <i data-lucide="eye-off"></i>
   </button>
   <div class="topbar-sep"></div>
-  <button class="icon-btn" onclick="openSettings()" title="Einstellungen">
+  <button class="icon-btn" onclick="openSettings()" title="Settings">
     <i data-lucide="settings"></i>
   </button>
-  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Light / Dark">
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle Theme">
     <i data-lucide="moon"></i>
   </button>
 </div>
@@ -515,7 +515,7 @@
   <div class="search-inner">
     <div class="search-field-wrap">
       <span class="s-ico"><i data-lucide="search"></i></span>
-      <input class="search-field" id="searchInput" placeholder="Suchen in diesem Ordner…" oninput="filterFiles()">
+      <input class="search-field" id="searchInput" placeholder="Search in this folder…" oninput="filterFiles()">
     </div>
     <span class="search-count" id="searchCount"></span>
     <button class="icon-btn" onclick="toggleSearch()"><i data-lucide="x"></i></button>
@@ -528,7 +528,7 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-section">
-      <div class="sb-label">Schnellzugriff</div>
+      <div class="sb-label">Quick Access</div>
       <div id="quickList">
         <div class="sb-item" id="qa-home" onclick="goHome()"
              ondragover="qaDragOver(event,this)" ondragleave="qaDragLeave(this)" ondrop="qaDrop(event,this,'home')">
@@ -556,20 +556,20 @@
     </div>
     <div class="sb-section drives-section">
       <div class="sb-label">
-        Laufwerke
-        <span class="usb-badge" id="usbBadge">Neu</span>
+        Drives
+        <span class="usb-badge" id="usbBadge">New</span>
       </div>
       <div id="driveList"></div>
     </div>
     <div class="sb-section">
-      <div class="sb-label">Lesezeichen</div>
+      <div class="sb-label">Bookmarks</div>
       <div id="bookmarkList"></div>
       <div class="sb-add" onclick="addBookmark()">
-        <i data-lucide="bookmark-plus"></i><span>Lesezeichen hinzufügen</span>
+        <i data-lucide="bookmark-plus"></i><span>Add Bookmark</span>
       </div>
 
     </div>
-    <button class="sidebar-toggle-btn" onclick="toggleSidebar()" id="sidebarToggleBtn" title="Sidebar einklappen">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()" id="sidebarToggleBtn" title="Collapse Sidebar">
       <i data-lucide="panel-left-close"></i>
     </button>
   </div>
@@ -581,14 +581,14 @@
        ondragover="areaDragOver(event)" ondragleave="areaDragLeave(event)" ondrop="areaDrop(event)">
     <div class="drop-zone-overlay" id="dropZoneOverlay">
       <i data-lucide="folder-input"></i>
-      <span id="dropZoneLabel">Hier ablegen zum Verschieben</span>
+      <span id="dropZoneLabel">Drop here to move</span>
     </div>
     <div class="list-header" id="listHeader">
       <div></div>
       <div class="lh-cell" onclick="sortBy('name')">Name <i data-lucide="chevrons-up-down"></i></div>
-      <div class="lh-cell" onclick="sortBy('size')" style="justify-content:flex-end;">Größe <i data-lucide="chevrons-up-down"></i></div>
-      <div class="lh-cell" onclick="sortBy('ext')">Typ <i data-lucide="chevrons-up-down"></i></div>
-      <div class="lh-cell" onclick="sortBy('date')">Geändert <i data-lucide="chevrons-up-down"></i></div>
+      <div class="lh-cell" onclick="sortBy('size')" style="justify-content:flex-end;">Size <i data-lucide="chevrons-up-down"></i></div>
+      <div class="lh-cell" onclick="sortBy('ext')">Type <i data-lucide="chevrons-up-down"></i></div>
+      <div class="lh-cell" onclick="sortBy('date')">Modified <i data-lucide="chevrons-up-down"></i></div>
     </div>
     <div id="listView" class="file-list"></div>
     <div id="gridView" class="file-grid" style="display:none;"></div>
@@ -600,13 +600,13 @@
 <!-- BOTTOM -->
 <div class="bottom" id="bottomPanel">
   <div class="preview-pane">
-    <div class="pane-bar"><i data-lucide="eye"></i><span>Vorschau</span></div>
-    <div class="pane-body" id="previewPane"><span class="pane-empty">Datei auswählen…</span></div>
+    <div class="pane-bar"><i data-lucide="eye"></i><span>Preview</span></div>
+    <div class="pane-body" id="previewPane"><span class="pane-empty">Select a file…</span></div>
   </div>
   <!-- Log resize handle -->
   <div class="resize-handle-x" id="logResizeHandle"></div>
   <div class="log-pane" id="logPane2">
-    <div class="pane-bar"><i data-lucide="activity"></i><span>Aktivität</span></div>
+    <div class="pane-bar"><i data-lucide="activity"></i><span>Activity</span></div>
     <div class="pane-body" id="logPane"></div>
   </div>
 </div>
@@ -614,7 +614,7 @@
 <!-- STATUS -->
 <div class="statusbar">
   <div class="st-item"><span class="st-dot"></span><span id="stCount">—</span></div>
-  <div class="st-item"><i data-lucide="mouse-pointer-2"></i><span id="stSel">Nichts ausgewählt</span></div>
+  <div class="st-item"><i data-lucide="mouse-pointer-2"></i><span id="stSel">Nothing selected</span></div>
   <div class="st-item" style="margin-left:auto;"><i data-lucide="hard-drive"></i><span id="stSys">—</span></div>
 </div>
 
@@ -623,22 +623,22 @@
 <div id="settingsOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;backdrop-filter:blur(6px);" onclick="settingsOverlayClick(event)">
   <div id="settingsPanel" style="position:absolute;right:0;top:0;bottom:0;width:360px;background:var(--bg-raised);border-left:1px solid var(--border);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,0.8);">
     <div style="height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);flex-shrink:0;">
-      <span style="font-size:15px;font-weight:600;color:var(--text-1);">Einstellungen</span>
+      <span style="font-size:15px;font-weight:600;color:var(--text-1);">Settings</span>
       <button onclick="closeSettings()" style="width:28px;height:28px;border:none;border-radius:6px;background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='transparent'"><i data-lucide="x"></i></button>
     </div>
     <div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:24px;">
 
       <div class="set-section">
-        <div class="set-label">Akzentfarbe</div>
+        <div class="set-label">Accent Color</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
-          <div class="swatch" data-color="#58a6ff" style="background:#58a6ff" onclick="setAccent('#58a6ff')" title="Blau"></div>
-          <div class="swatch" data-color="#3fb950" style="background:#3fb950" onclick="setAccent('#3fb950')" title="Grün"></div>
+          <div class="swatch" data-color="#58a6ff" style="background:#58a6ff" onclick="setAccent('#58a6ff')" title="Blue"></div>
+          <div class="swatch" data-color="#3fb950" style="background:#3fb950" onclick="setAccent('#3fb950')" title="Green"></div>
           <div class="swatch" data-color="#f78166" style="background:#f78166" onclick="setAccent('#f78166')" title="Orange"></div>
-          <div class="swatch" data-color="#bc8cff" style="background:#bc8cff" onclick="setAccent('#bc8cff')" title="Lila"></div>
+          <div class="swatch" data-color="#bc8cff" style="background:#bc8cff" onclick="setAccent('#bc8cff')" title="Purple"></div>
           <div class="swatch" data-color="#ff7eb6" style="background:#ff7eb6" onclick="setAccent('#ff7eb6')" title="Pink"></div>
-          <div class="swatch" data-color="#f0b429" style="background:#f0b429" onclick="setAccent('#f0b429')" title="Gelb"></div>
+          <div class="swatch" data-color="#f0b429" style="background:#f0b429" onclick="setAccent('#f0b429')" title="Yellow"></div>
           <div class="swatch" data-color="#39d0d8" style="background:#39d0d8" onclick="setAccent('#39d0d8')" title="Cyan"></div>
-          <div class="swatch" data-color="#ff5c5c" style="background:#ff5c5c" onclick="setAccent('#ff5c5c')" title="Rot"></div>
+          <div class="swatch" data-color="#ff5c5c" style="background:#ff5c5c" onclick="setAccent('#ff5c5c')" title="Red"></div>
           <div class="swatch custom-color-wrap" title="Eigene Farbe" style="overflow:hidden;position:relative;">
             <input type="color" id="accentCustom" style="opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;border:none;" oninput="setAccent(this.value)" />
             <i data-lucide="pipette" style="width:14px;height:14px;pointer-events:none;color:var(--text-2);"></i>
@@ -647,11 +647,11 @@
       </div>
 
       <div class="set-section">
-        <div class="set-label">Hintergrundfarbe (Dark)</div>
+        <div class="set-label">Background Color (Dark)</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
-          <div class="swatch" data-bg="#000000" style="background:#000000;border:1px solid #333" onclick="setBg('#000000','#0a0a0a','#111111','#1a1a1a')" title="Schwarz"></div>
-          <div class="swatch" data-bg="#0d0d0d" style="background:#0d0d0d" onclick="setBg('#0d0d0d','#141414','#1c1c1c','#242424')" title="Fast Schwarz"></div>
-          <div class="swatch" data-bg="#0f1117" style="background:#0f1117" onclick="setBg('#0f1117','#161b22','#1c2333','#21283a')" title="Dunkelblau"></div>
+          <div class="swatch" data-bg="#000000" style="background:#000000;border:1px solid #333" onclick="setBg('#000000','#0a0a0a','#111111','#1a1a1a')" title="Black"></div>
+          <div class="swatch" data-bg="#0d0d0d" style="background:#0d0d0d" onclick="setBg('#0d0d0d','#141414','#1c1c1c','#242424')" title="Almost Black"></div>
+          <div class="swatch" data-bg="#0f1117" style="background:#0f1117" onclick="setBg('#0f1117','#161b22','#1c2333','#21283a')" title="Dark Blue"></div>
           <div class="swatch" data-bg="#0d1117" style="background:#0d1117" onclick="setBg('#0d1117','#161b22','#21262d','#30363d')" title="GitHub Dark"></div>
           <div class="swatch" data-bg="#1a1a2e" style="background:#1a1a2e" onclick="setBg('#1a1a2e','#16213e','#0f3460','#1a1a4e')" title="Midnight Blue"></div>
           <div class="swatch" data-bg="#120720" style="background:#120720" onclick="setBg('#120720','#1a0d2e','#22103a','#2d1550')" title="Dark Purple"></div>
@@ -659,29 +659,29 @@
       </div>
 
       <div class="set-section">
-        <div class="set-label">Schriftgröße &nbsp;<span id="fontSizeVal" style="color:var(--accent);font-weight:600;"></span></div>
+        <div class="set-label">Font Size &nbsp;<span id="fontSizeVal" style="color:var(--accent);font-weight:600;"></span></div>
         <input type="range" id="fontSizeSlider" min="11" max="18" step="1" style="width:100%;margin-top:10px;accent-color:var(--accent);cursor:pointer;" oninput="setFontSize(+this.value)" />
       </div>
 
       <div class="set-section">
-        <div class="set-label">Icon-Größe &nbsp;<span id="iconSizeVal" style="color:var(--accent);font-weight:600;"></span></div>
+        <div class="set-label">Icon Size &nbsp;<span id="iconSizeVal" style="color:var(--accent);font-weight:600;"></span></div>
         <input type="range" id="iconSizeSlider" min="12" max="28" step="2" style="width:100%;margin-top:10px;accent-color:var(--accent);cursor:pointer;" oninput="setIconSize(+this.value)" />
       </div>
 
       <div class="set-section">
-        <div class="set-label">Zeilenhöhe &nbsp;<span id="rowHeightVal" style="color:var(--accent);font-weight:600;"></span></div>
+        <div class="set-label">Row Height &nbsp;<span id="rowHeightVal" style="color:var(--accent);font-weight:600;"></span></div>
         <input type="range" id="rowHeightSlider" min="24" max="52" step="2" style="width:100%;margin-top:10px;accent-color:var(--accent);cursor:pointer;" oninput="setRowHeight(+this.value)" />
       </div>
 
       <div class="set-section">
-        <div class="set-label">Eckenrundung &nbsp;<span id="radiusVal" style="color:var(--accent);font-weight:600;"></span></div>
+        <div class="set-label">Border Radius &nbsp;<span id="radiusVal" style="color:var(--accent);font-weight:600;"></span></div>
         <input type="range" id="radiusSlider" min="0" max="16" step="2" style="width:100%;margin-top:10px;accent-color:var(--accent);cursor:pointer;" oninput="setRadius(+this.value)" />
       </div>
 
       <div class="set-section">
-        <div class="set-label">Schriftart</div>
+        <div class="set-label">Font</div>
         <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;" id="fontOptions">
-          <div class="font-option" data-font="Inter, system-ui, sans-serif" onclick="setFont(this.dataset.font)" style="font-family:Inter,sans-serif;">Inter (Standard)</div>
+          <div class="font-option" data-font="Inter, system-ui, sans-serif" onclick="setFont(this.dataset.font)" style="font-family:Inter,sans-serif;">Inter (Default)</div>
           <div class="font-option" data-font="JetBrains Mono, monospace" onclick="setFont(this.dataset.font)" style="font-family:'JetBrains Mono',monospace;">JetBrains Mono</div>
           <div class="font-option" data-font="system-ui, sans-serif" onclick="setFont(this.dataset.font)" style="font-family:system-ui;">System UI</div>
           <div class="font-option" data-font="Segoe UI, sans-serif" onclick="setFont(this.dataset.font)" style="font-family:'Segoe UI',sans-serif;">Segoe UI</div>
@@ -690,7 +690,7 @@
       </div>
 
       <div class="set-section">
-        <button onclick="resetSettings()" style="width:100%;height:34px;border:1px solid var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-2)'">Einstellungen zurücksetzen</button>
+        <button onclick="resetSettings()" style="width:100%;height:34px;border:1px solid var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-2)'">Reset Settings</button>
       </div>
 
     </div>
@@ -700,17 +700,17 @@
 
 <!-- ── BOOKMARK CONTEXT MENU ── -->
 <div id="bmCtxMenu" style="display:none;position:fixed;z-index:400;background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);min-width:170px;padding:4px;">
-  <div id="bmCtxRename" class="ctx-it"><i data-lucide="pencil"></i> Umbenennen</div>
-  <div id="bmCtxIcon"   class="ctx-it"><i data-lucide="smile"></i> Icon ändern</div>
+  <div id="bmCtxRename" class="ctx-it"><i data-lucide="pencil"></i> Rename</div>
+  <div id="bmCtxIcon"   class="ctx-it"><i data-lucide="smile"></i> Change Icon</div>
   <div class="ctx-sep"></div>
-  <div id="bmCtxDelete" class="ctx-it" style="color:var(--red)"><i data-lucide="trash-2" style="color:var(--red)"></i> Löschen</div>
+  <div id="bmCtxDelete" class="ctx-it" style="color:var(--red)"><i data-lucide="trash-2" style="color:var(--red)"></i> Delete</div>
 </div>
 
 <!-- ── BOOKMARK EDIT MODAL ── -->
 <div id="bmEditOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:450;backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="bmEditOverlayClick(event)">
   <div style="background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);width:340px;overflow:hidden;">
     <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--border);">
-      <span id="bmEditTitle" style="font-size:14px;font-weight:600;color:var(--text-1);">Lesezeichen bearbeiten</span>
+      <span id="bmEditTitle" style="font-size:14px;font-weight:600;color:var(--text-1);">Edit Bookmark</span>
       <button onclick="closeBmEdit()" style="width:28px;height:28px;border:none;border-radius:6px;background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='transparent'"><i data-lucide="x"></i></button>
     </div>
     <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
@@ -719,20 +719,20 @@
         <input id="bmEditNameInput" type="text" style="height:34px;background:var(--bg-overlay);border:1px solid var(--border);border-radius:var(--radius);padding:0 10px;font-family:var(--font);font-size:13px;color:var(--text-1);outline:none;" onfocus="this.style.borderColor='var(--border-focus)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')confirmBmEdit();if(event.key==='Escape')closeBmEdit();" />
       </div>
       <div id="bmEditIconRow" style="display:none;flex-direction:column;gap:8px;">
-        <label style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;">Icon (Lucide-Name oder Emoji)</label>
-        <input id="bmEditIconInput" type="text" placeholder="z.B. star, folder, 🚀, 📁" style="height:34px;background:var(--bg-overlay);border:1px solid var(--border);border-radius:var(--radius);padding:0 10px;font-family:var(--font);font-size:13px;color:var(--text-1);outline:none;" onfocus="this.style.borderColor='var(--border-focus)'" onblur="this.style.borderColor='var(--border)'" oninput="previewBmIcon(this.value)" onkeydown="if(event.key==='Enter')confirmBmEdit();if(event.key==='Escape')closeBmEdit();" />
+        <label style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;">Icon (Lucide name or emoji)</label>
+        <input id="bmEditIconInput" type="text" placeholder="e.g. star, folder, 🚀, 📁" style="height:34px;background:var(--bg-overlay);border:1px solid var(--border);border-radius:var(--radius);padding:0 10px;font-family:var(--font);font-size:13px;color:var(--text-1);outline:none;" onfocus="this.style.borderColor='var(--border-focus)'" onblur="this.style.borderColor='var(--border)'" oninput="previewBmIcon(this.value)" onkeydown="if(event.key==='Enter')confirmBmEdit();if(event.key==='Escape')closeBmEdit();" />
         <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg-overlay);border-radius:var(--radius-sm);">
-          <span style="font-size:11px;color:var(--text-3);">Vorschau:</span>
+          <span style="font-size:11px;color:var(--text-3);">Preview:</span>
           <span id="bmIconPreview" style="display:flex;align-items:center;gap:6px;color:var(--text-1);font-size:16px;"></span>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;">
-          <span style="font-size:10px;color:var(--text-3);width:100%;margin-bottom:2px;">Schnellwahl:</span>
+          <span style="font-size:10px;color:var(--text-3);width:100%;margin-bottom:2px;">Suggestions:</span>
           <span id="bmIconSuggestions"></span>
         </div>
       </div>
       <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px;">
-        <button onclick="closeBmEdit()" style="height:32px;padding:0 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;">Abbrechen</button>
-        <button onclick="confirmBmEdit()" style="height:32px;padding:0 14px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:white;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;">Speichern</button>
+        <button onclick="closeBmEdit()" style="height:32px;padding:0 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;">Cancel</button>
+        <button onclick="confirmBmEdit()" style="height:32px;padding:0 14px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:white;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;">Save</button>
       </div>
     </div>
   </div>
@@ -751,27 +751,27 @@
 
 <!-- CONTEXT MENU -->
 <div class="ctx-menu" id="ctxMenu">
-  <div class="ctx-it" id="ctxOpen"><i data-lucide="play-circle"></i> Öffnen</div>
-  <div class="ctx-it" id="ctxPreview"><i data-lucide="eye"></i> Vorschau</div>
+  <div class="ctx-it" id="ctxOpen"><i data-lucide="play-circle"></i> Open</div>
+  <div class="ctx-it" id="ctxPreview"><i data-lucide="eye"></i> Preview</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-it" id="ctxDownload"><i data-lucide="download"></i> Herunterladen</div>
-  <div class="ctx-it" id="ctxBookmark"><i data-lucide="bookmark-plus"></i> Lesezeichen</div>
+  <div class="ctx-it" id="ctxDownload"><i data-lucide="download"></i> Download</div>
+  <div class="ctx-it" id="ctxBookmark"><i data-lucide="bookmark-plus"></i> Bookmark</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-it" id="ctxCopyPath"><i data-lucide="copy"></i> Pfad kopieren</div>
-  <div class="ctx-it" id="ctxRename"><i data-lucide="pencil"></i> Umbenennen</div>
+  <div class="ctx-it" id="ctxCopyPath"><i data-lucide="copy"></i> Copy Path</div>
+  <div class="ctx-it" id="ctxRename"><i data-lucide="pencil"></i> Rename</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-it" id="ctxDelete" style="color:var(--red)"><i data-lucide="trash-2" style="color:var(--red)"></i> Löschen</div>
+  <div class="ctx-it" id="ctxDelete" style="color:var(--red)"><i data-lucide="trash-2" style="color:var(--red)"></i> Delete</div>
 </div>
 
 <!-- NEW / RENAME MODAL -->
 <div class="modal-overlay" id="promptOverlay" onclick="promptOverlayClick(event)">
   <div class="modal" style="width:360px;max-height:none;">
     <div class="modal-head">
-      <span class="modal-title" id="promptTitle">Neuer Ordner</span>
+      <span class="modal-title" id="promptTitle">New Folder</span>
       <button class="modal-close" onclick="closePrompt()"><i data-lucide="x"></i></button>
     </div>
     <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
-      <input id="promptInput" type="text" placeholder="Name eingeben…"
+      <input id="promptInput" type="text" placeholder="Enter name…"
         style="height:36px;background:var(--bg-overlay);border:1px solid var(--border);border-radius:var(--radius);
                padding:0 12px;font-family:var(--font);font-size:13px;color:var(--text-1);outline:none;
                transition:border-color 0.15s;"
@@ -780,9 +780,9 @@
         onkeydown="if(event.key==='Enter')confirmPrompt();if(event.key==='Escape')closePrompt();" />
       <div style="display:flex;justify-content:flex-end;gap:8px;">
         <button onclick="closePrompt()" style="height:32px;padding:0 14px;border:1px solid var(--border);border-radius:var(--radius-sm);
-          background:transparent;color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;">Abbrechen</button>
+          background:transparent;color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;">Cancel</button>
         <button onclick="confirmPrompt()" id="promptOkBtn" style="height:32px;padding:0 14px;border:none;border-radius:var(--radius-sm);
-          background:var(--accent);color:white;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;">Erstellen</button>
+          background:var(--accent);color:white;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;">Create</button>
       </div>
     </div>
   </div>
@@ -1086,7 +1086,7 @@ async function openSys(item){
     const text=await res.text();
     let d;
     try{ d=JSON.parse(text); }catch(e){ log('Server-Fehler: '+text.substring(0,80),'err'); return; }
-    if(d.success)log('Geöffnet: '+item.name,'ok');
+    if(d.success)log('Opened: '+item.name,'ok');
     else log('Fehler: '+(d.error||'Unbekannter Fehler'),'warn');
   }catch(e){log('Fehler: '+e.message,'err');}
 }
@@ -1115,13 +1115,13 @@ async function loadPreview(item,modal=false){
   try{
     const d=await fetch('/api/read?path='+encodeURIComponent(fp)).then(r=>r.json());
     if(d.success){
-      const txt=d.content.length>8000?d.content.substring(0,8000)+'\n…(gekürzt)':d.content;
+      const txt=d.content.length>8000?d.content.substring(0,8000)+'\n…(truncated)':d.content;
       p.innerHTML=`<pre>${escH(txt)}</pre>`;
       if(modal){document.getElementById('modalTitle').textContent=item.name;document.getElementById('modalContent').textContent=d.content;const mb=document.querySelector('.modal-body');mb.innerHTML=`<pre>${escH(d.content)}</pre>`;document.getElementById('modalOverlay').classList.add('open');}
     }else{p.innerHTML=`<span class="pane-empty">${escH(d.error||'Keine Vorschau')}</span>`;}
   }catch(e){p.innerHTML='<span class="pane-empty">Fehler</span>';}
 }
-function clearPreview(){document.getElementById('previewPane').innerHTML='<span class="pane-empty">Datei auswählen…</span>';}
+function clearPreview(){document.getElementById('previewPane').innerHTML='<span class="pane-empty">Select a file…</span>';}
 
 // CONTEXT MENU
 function showCtx(e,idx,items){
@@ -1224,7 +1224,7 @@ function addBmPath(p,name){
 function updStatus(){
   const items=getItems(),dirs=items.filter(i=>i.isDirectory).length,files=items.filter(i=>!i.isDirectory).length;
   cm('stCount').textContent=`${items.length} Elemente · ${dirs} Ordner, ${files} Dateien`;
-  cm('stSel').textContent='Nichts ausgewählt';
+  cm('stSel').textContent='Nothing selected';
 }
 
 // LOG
@@ -1344,9 +1344,9 @@ function promptOverlayClick(e) { if (e.target === document.getElementById('promp
 async function deleteItem(item) {
   const fp = bpath(item.name);
   const what = item.isDirectory ? `Ordner "${item.name}" und seinen gesamten Inhalt` : `Datei "${item.name}"`;
-  if (!confirm(`${what} wirklich löschen?`)) return;
+  if (!confirm(`${what} really delete?`)) return;
   const res = await fetch('/api/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ itemPath: fp }) }).then(r=>r.json());
-  if (res.success) { log('Gelöscht: ' + item.name, 'warn'); selectedItem = null; refresh(); }
+  if (res.success) { log('Deleted: ' + item.name, 'warn'); selectedItem = null; refresh(); }
   else log('Fehler: ' + res.error, 'err');
 }
 
@@ -1676,10 +1676,10 @@ async function loadPersisted() {
       localStorage.setItem('tfm-custom-quick', JSON.stringify(customQuick));
     }
 
-    console.log('Einstellungen aus settings.json geladen');
+    console.log('Settings loaded from settings.json');
   } catch(e) {
     // Fallback: use localStorage (already loaded in variable declarations)
-    console.log('settings.json nicht verfügbar, nutze localStorage');
+    console.log('settings.json not available, using localStorage');
   }
 }
 
@@ -1790,11 +1790,11 @@ function setFont(f) {
   document.querySelectorAll('.font-option').forEach(el => el.classList.toggle('active', el.dataset.font === f));
 }
 function resetSettings() {
-  if (!confirm('Alle Einstellungen zurücksetzen?')) return;
+  if (!confirm('Reset all settings?')) return;
   settings = { ...SETTINGS_DEFAULTS };
   saveSettings(); applySettings(); openSettings();
   persistFlush();
-  log('Einstellungen zurückgesetzt', 'ok');
+  log('Settings reset', 'ok');
 }
 
 
@@ -1804,17 +1804,17 @@ let bmEditMode = null; // 'rename' | 'icon'
 
 const BM_ICON_SUGGESTIONS = [
   { icon:'bookmark',    label:'Standard' },
-  { icon:'star',        label:'Stern'    },
-  { icon:'heart',       label:'Herz'     },
-  { icon:'folder',      label:'Ordner'   },
+  { icon:'star',        label:'Star'     },
+  { icon:'heart',       label:'Heart'    },
+  { icon:'folder',      label:'Folder'   },
   { icon:'code-2',      label:'Code'     },
-  { icon:'image',       label:'Bilder'   },
-  { icon:'music-2',     label:'Musik'    },
+  { icon:'image',       label:'Images'   },
+  { icon:'music-2',     label:'Music'    },
   { icon:'film',        label:'Video'    },
-  { icon:'file-text',   label:'Dokument' },
-  { icon:'database',    label:'Daten'    },
+  { icon:'file-text',   label:'Document' },
+  { icon:'database',    label:'Data'    },
   { icon:'cloud',       label:'Cloud'    },
-  { icon:'lock',        label:'Sicher'   },
+  { icon:'lock',        label:'Security'   },
   { icon:'🚀',          label:'🚀'       },
   { icon:'📁',          label:'📁'       },
   { icon:'💼',          label:'💼'       },
@@ -1848,12 +1848,12 @@ document.getElementById('bmCtxDelete').onclick = () => {
   document.getElementById('bmCtxMenu').style.display = 'none';
   if (bmCtxIdx === null) return;
   const bm = bookmarks[bmCtxIdx];
-  if (!confirm(`Lesezeichen "${bm.name}" löschen?`)) return;
+  if (!confirm(`Delete bookmark "${bm.name}"?`)) return;
   bookmarks.splice(bmCtxIdx, 1);
   localStorage.setItem('tfm-bm', JSON.stringify(bookmarks));
   persistNow('bookmarks', bookmarks);
   loadBookmarks();
-  log('Lesezeichen gelöscht: ' + bm.name, 'warn');
+  log('Bookmark deleted: ' + bm.name, 'warn');
 };
 
 document.addEventListener('click', e => {
@@ -1880,7 +1880,7 @@ function openBmEdit(mode, idx) {
       inp.focus(); inp.select();
     }, 50);
   } else {
-    document.getElementById('bmEditTitle').textContent = 'Icon ändern';
+    document.getElementById('bmEditTitle').textContent = 'Change Icon';
     nameRow.style.display = 'none';
     iconRow.style.display = 'flex';
     const currentIcon = bm.icon || 'bookmark';
@@ -1943,7 +1943,7 @@ function confirmBmEdit() {
   } else {
     const icon = document.getElementById('bmEditIconInput').value.trim();
     bookmarks[bmCtxIdx].icon = icon || '';
-    log('Icon gesetzt: ' + (icon || 'Standard'), 'ok');
+    log('Icon set: ' + (icon || 'Standard'), 'ok');
   }
   localStorage.setItem('tfm-bm', JSON.stringify(bookmarks));
   persistNow('bookmarks', bookmarks);
