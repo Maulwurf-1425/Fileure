@@ -78,7 +78,7 @@ Next, 3. **go to your desktop**, 4. **right-click, and select "New"** and 5. **t
 
 # Standard Icon too boring?
 
-If you'd like a nicer icon, you can download one. We use [Lucide Icons](https://lucide.dev/) (The icon of Fliegere is called "folder-tree"). You can download an icon there (preferably as an SVG) and then convert it to an .ico file. We used [Convertio](https://convertio.co/svg-ico/) for this.
+If you'd like a nicer icon, you can download one. We use [Lucide Icons](https://lucide.dev/) (The icon of Fliegere is called `folder-tree`). You can download an icon there (preferably as an SVG) and then convert it to an .ico file. We used [Convertio](https://convertio.co/svg-ico/) for this.
 
 Once you've downloaded it, go to Properties and select "Change Icon" (if a message appears, click OK). Now you can find and select the icon.
 
