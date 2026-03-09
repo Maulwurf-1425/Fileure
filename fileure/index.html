@@ -157,6 +157,397 @@
     .drop-zone-overlay svg { width: 36px; height: 36px; }
     .file-area { position: relative; }
 
+
+    /* ══════════════════════════════════════════════════════════════════════
+       WORKSPACE (NOTION-STYLE)
+    ══════════════════════════════════════════════════════════════════════ */
+    .workspace-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: var(--bg);
+      flex-direction: column;
+      animation: wsFadeIn 0.18s ease;
+    }
+    .workspace-overlay.open { display: flex; }
+    @keyframes wsFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* top bar */
+    .ws-topbar {
+      height: 48px; flex-shrink: 0;
+      background: var(--bg-raised); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 16px; gap: 8px;
+    }
+    .ws-title-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      font-family: var(--font); font-size: 14px; font-weight: 600;
+      color: var(--text-1);
+    }
+    .ws-topbar-right { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+
+    /* layout */
+    .ws-body { flex: 1; display: flex; overflow: hidden; }
+
+    /* sidebar: page list */
+    .ws-sidebar {
+      width: 240px; flex-shrink: 0;
+      background: var(--bg-raised); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .ws-sidebar-top {
+      padding: 10px 12px 6px; display: flex; flex-direction: column; gap: 2px;
+    }
+    .ws-sidebar-label {
+      font-size: 10.5px; font-weight: 600; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .07em; padding: 4px 4px 6px;
+    }
+    .ws-page-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 8px; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 13px; color: var(--text-2);
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+    }
+    .ws-page-item:hover { background: var(--bg-hover); color: var(--text-1); }
+    .ws-page-item.active { background: var(--accent-bg); color: var(--accent); }
+    .ws-page-item .page-emoji { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+    .ws-page-item .page-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ws-page-item .page-del {
+      opacity: 0; width: 20px; height: 20px; border: none; background: transparent;
+      color: var(--text-3); cursor: pointer; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity var(--transition), color var(--transition);
+      flex-shrink: 0;
+    }
+    .ws-page-item:hover .page-del { opacity: 1; }
+    .ws-page-item .page-del:hover { color: var(--red); }
+    .ws-page-item .page-del svg { width: 13px; height: 13px; }
+    .ws-add-page {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 8px; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 13px; color: var(--text-3);
+      transition: color var(--transition), background var(--transition);
+      margin-top: 2px;
+    }
+    .ws-add-page:hover { color: var(--accent); background: var(--bg-hover); }
+    .ws-add-page svg { width: 14px; height: 14px; }
+
+    /* main editor area */
+    .ws-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .ws-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px; color: var(--text-3);
+    }
+    .ws-empty svg { width: 48px; height: 48px; opacity: 0.25; }
+    .ws-empty p { font-size: 14px; }
+    .ws-empty button {
+      margin-top: 8px; height: 36px; padding: 0 20px;
+      background: var(--accent); color: white; border: none;
+      border-radius: var(--radius); font-family: var(--font);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+    }
+
+    /* page editor */
+    .ws-editor { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .ws-editor-header {
+      padding: 32px 60px 0; flex-shrink: 0;
+    }
+    .ws-emoji-picker {
+      font-size: 42px; cursor: pointer; user-select: none;
+      display: inline-block; margin-bottom: 12px;
+      transition: transform .1s;
+    }
+    .ws-emoji-picker:hover { transform: scale(1.1); }
+    .ws-page-title {
+      width: 100%; background: transparent; border: none; outline: none;
+      font-family: var(--font); font-size: 32px; font-weight: 700;
+      color: var(--text-1); line-height: 1.2; resize: none;
+      overflow: hidden; min-height: 40px;
+    }
+    .ws-page-title::placeholder { color: var(--text-3); }
+
+    /* blocks */
+    .ws-blocks { flex: 1; overflow-y: auto; padding: 16px 60px 60px; }
+
+    .ws-block {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-bottom: 2px; position: relative; group: true;
+    }
+    .ws-block:hover .block-handle { opacity: 1; }
+    .block-handle {
+      opacity: 0; width: 20px; height: 24px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: grab; color: var(--text-3); margin-top: 2px;
+      transition: opacity var(--transition);
+    }
+    .block-handle svg { width: 14px; height: 14px; }
+
+    /* text block */
+    .block-text {
+      flex: 1; min-height: 24px; outline: none;
+      font-family: var(--font); font-size: 14px; line-height: 1.7;
+      color: var(--text-1); word-break: break-word;
+    }
+    .block-text:empty::before { content: attr(data-placeholder); color: var(--text-3); pointer-events: none; }
+    .block-text b, .block-text strong { font-weight: 600; }
+    .block-text i, .block-text em { font-style: italic; }
+    .block-text code { background: var(--bg-overlay); border-radius: 4px; padding: 1px 5px; font-family: monospace; font-size: 13px; }
+
+    /* heading blocks */
+    .block-h1 { font-size: 26px; font-weight: 700; line-height: 1.3; color: var(--text-1); }
+    .block-h2 { font-size: 20px; font-weight: 600; line-height: 1.4; color: var(--text-1); }
+    .block-h3 { font-size: 16px; font-weight: 600; line-height: 1.5; color: var(--text-1); }
+
+    /* task block */
+    .block-task-wrap { display: flex; align-items: flex-start; gap: 8px; flex: 1; }
+    .task-cb {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 2px solid var(--border); background: transparent;
+      cursor: pointer; flex-shrink: 0; margin-top: 5px;
+      appearance: none; -webkit-appearance: none;
+      transition: background var(--transition), border-color var(--transition);
+      position: relative;
+    }
+    .task-cb:checked { background: var(--accent); border-color: var(--accent); }
+    .task-cb:checked::after {
+      content: ''; position: absolute; left: 3px; top: 0px;
+      width: 5px; height: 9px; border: 2px solid white;
+      border-top: none; border-left: none; transform: rotate(45deg);
+    }
+    .task-text { flex: 1; }
+    .task-cb:checked + .block-text { color: var(--text-3); text-decoration: line-through; }
+
+    /* quote block */
+    .block-quote {
+      border-left: 3px solid var(--accent); padding-left: 12px;
+      color: var(--text-2); font-style: italic;
+    }
+
+    /* divider block */
+    .block-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; flex: 1; }
+
+    /* file link block */
+    .block-filelink {
+      flex: 1; display: flex; align-items: center; gap: 10px;
+      background: var(--bg-overlay); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px 12px; cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      text-decoration: none;
+    }
+    .block-filelink:hover { border-color: var(--accent); background: var(--accent-bg); }
+    .block-filelink svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+    .block-filelink-info { flex: 1; overflow: hidden; }
+    .block-filelink-name { font-size: 13px; font-weight: 500; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .block-filelink-path { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .block-filelink-open { color: var(--text-3); font-size: 11px; flex-shrink: 0; }
+
+    /* page link block */
+    .block-pagelink {
+      flex: 1; display: flex; align-items: center; gap: 10px;
+      background: var(--bg-overlay); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px 12px; cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .block-pagelink:hover { border-color: var(--purple); background: rgba(188,140,255,0.08); }
+    .block-pagelink-emoji { font-size: 18px; }
+    .block-pagelink-name { font-size: 13px; font-weight: 500; color: var(--text-1); }
+
+    /* block type menu */
+    .block-type-menu {
+      display: none; position: fixed; z-index: 600;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 4px; min-width: 200px; max-height: 300px; overflow-y: auto;
+    }
+    .block-type-menu.open { display: block; }
+    .btm-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 10px; border-radius: 5px; cursor: pointer;
+      font-size: 13px; color: var(--text-1);
+      transition: background var(--transition);
+    }
+    .btm-item:hover, .btm-item.focused { background: var(--bg-hover); }
+    .btm-item-ico {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--bg-overlay); display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+      font-size: 14px;
+    }
+    .btm-item-ico svg { width: 14px; height: 14px; color: var(--text-2); }
+    .btm-item-label { font-weight: 500; }
+    .btm-item-desc { font-size: 11px; color: var(--text-3); }
+    .btm-sep { height: 1px; background: var(--border); margin: 3px 0; }
+
+    /* emoji picker popup */
+    .emoji-popup {
+      display: none; position: fixed; z-index: 700;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 12px; width: 280px;
+    }
+    .emoji-popup.open { display: block; }
+    .emoji-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .emoji-btn { font-size: 20px; padding: 4px; border-radius: 6px; cursor: pointer; transition: background var(--transition); }
+    .emoji-btn:hover { background: var(--bg-hover); }
+
+    /* task filter bar */
+    .ws-task-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 60px; border-bottom: 1px solid var(--border);
+      background: var(--bg-raised); flex-shrink: 0;
+    }
+    .ws-filter-btn {
+      height: 26px; padding: 0 10px; border: 1px solid var(--border);
+      border-radius: 99px; background: transparent; font-family: var(--font);
+      font-size: 12px; color: var(--text-2); cursor: pointer;
+      transition: all var(--transition);
+    }
+    .ws-filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .ws-filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .ws-task-count { font-size: 12px; color: var(--text-3); margin-left: auto; }
+
+
+    /* ══════════════════════════════════════════════════════════════════════
+       BOARD / PROJEKTE
+    ══════════════════════════════════════════════════════════════════════ */
+    .ws-view-bar {
+      display: flex; align-items: center; gap: 2px;
+      padding: 0 16px; flex-shrink: 0; height: 42px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-raised);
+    }
+    .ws-view-tab {
+      display: flex; align-items: center; gap: 6px; height: 100%;
+      padding: 0 14px; font-size: 13px; font-weight: 500;
+      color: var(--text-2); cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .ws-view-tab svg { width: 14px; height: 14px; }
+    .ws-view-tab:hover { color: var(--text-1); }
+    .ws-view-tab.active { color: var(--text-1); border-bottom-color: var(--accent); }
+
+    /* board columns */
+    .board-view {
+      flex: 1; display: flex; overflow-x: auto; overflow-y: hidden;
+      padding: 20px; gap: 16px; align-items: flex-start;
+    }
+    .board-column { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0; }
+    .board-col-header { display: flex; align-items: center; gap: 8px; padding: 4px 2px 10px; }
+    .board-col-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .board-col-title { font-size: 13px; font-weight: 600; color: var(--text-1); flex: 1; }
+    .board-col-count { font-size: 11px; color: var(--text-2); background: var(--bg-overlay); border-radius: 99px; padding: 1px 7px; font-weight: 600; }
+    .board-cards { display: flex; flex-direction: column; gap: 8px; min-height: 40px; }
+    .board-col-drop { min-height: 10px; border-radius: var(--radius); transition: background .15s, min-height .15s; }
+    .board-col-drop.drag-over { background: var(--accent-bg); min-height: 48px; border: 2px dashed var(--accent); }
+
+    .board-card {
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+      cursor: pointer; transition: border-color .15s, box-shadow .15s;
+      display: flex; flex-direction: column; gap: 10px;
+      position: relative;
+    }
+    .board-card:hover { border-color: var(--text-3); box-shadow: 0 3px 16px rgba(0,0,0,.4); }
+    .board-card.dragging { opacity: .35; }
+    .board-card-top { display: flex; align-items: flex-start; gap: 8px; }
+    .board-card-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+    .board-card-name { font-size: 13px; font-weight: 600; color: var(--text-1); flex: 1; line-height: 1.4; }
+    .board-card-dots {
+      opacity: 0; width: 22px; height: 22px; border: none; background: transparent;
+      color: var(--text-3); cursor: pointer; border-radius: 4px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity .12s; margin-top: -2px;
+    }
+    .board-card:hover .board-card-dots { opacity: 1; }
+    .board-card-dots:hover { background: var(--bg-hover); color: var(--text-1); }
+    .board-card-dots svg { width: 13px; height: 13px; }
+
+    .progress-track { height: 4px; background: var(--bg-overlay); border-radius: 99px; overflow: hidden; }
+    .progress-fill  { height: 100%; border-radius: 99px; transition: width .35s; }
+    .progress-row   { display: flex; align-items: center; gap: 8px; }
+    .progress-pct   { font-size: 11px; color: var(--text-2); white-space: nowrap; }
+
+    .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 99px; }
+    .badge-hoch    { background: rgba(248,81,73,.15);   color: #f85149; }
+    .badge-mittel  { background: rgba(240,180,41,.15);  color: #f0b429; }
+    .badge-niedrig { background: rgba(63,185,80,.15);   color: #3fb950; }
+
+    .board-card-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .card-date { font-size: 11px; color: var(--text-3); display: flex; align-items: center; gap: 3px; }
+    .card-date svg { width: 11px; height: 11px; }
+    .card-customer { font-size: 11px; background: var(--bg-overlay); border-radius: 99px; padding: 1px 7px; color: var(--text-2); }
+
+    .board-add-card { display: flex; align-items: center; gap: 6px; padding: 8px 2px; font-size: 13px; color: var(--text-3); cursor: pointer; border-radius: var(--radius-sm); transition: color .12s, background .12s; margin-top: 4px; }
+    .board-add-card:hover { color: var(--accent); background: var(--accent-bg); padding-left: 6px; }
+    .board-add-card svg { width: 14px; height: 14px; }
+
+    .board-add-col { width: 220px; flex-shrink: 0; padding-top: 4px; }
+    .board-add-col-btn { display: flex; align-items: center; gap: 6px; padding: 8px 12px; font-size: 13px; color: var(--text-3); cursor: pointer; border: 1px dashed var(--border); border-radius: var(--radius); background: transparent; font-family: var(--font); transition: color .12s, border-color .12s; width: 100%; }
+    .board-add-col-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .board-add-col-btn svg { width: 14px; height: 14px; }
+
+    /* table view */
+    .table-view { flex: 1; overflow: auto; }
+    .table-view table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .table-view th { position: sticky; top: 0; background: var(--bg-raised); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--border); white-space: nowrap; z-index: 2; }
+    .table-view td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text-1); vertical-align: middle; }
+    .table-view tr:hover td { background: var(--bg-hover); cursor: pointer; }
+    .td-name { font-weight: 500; display: flex; align-items: center; gap: 8px; }
+    .td-prog { min-width: 110px; display: flex; align-items: center; gap: 8px; }
+    .table-add-row td { color: var(--text-3); cursor: pointer; font-size: 13px; }
+    .table-add-row:hover td { color: var(--accent); background: var(--bg-hover) !important; }
+
+    /* project detail panel */
+    .project-detail {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 520px;
+      background: var(--bg-raised); border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: -8px 0 40px rgba(0,0,0,.5); z-index: 20;
+      animation: pdSlideIn .2s ease;
+    }
+    @keyframes pdSlideIn { from { transform: translateX(100%); } to { transform: none; } }
+    .pd-topbar { height: 46px; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; gap: 8px; }
+    .pd-header { padding: 24px 28px 16px; flex-shrink: 0; border-bottom: 1px solid var(--border); }
+    .pd-emoji { font-size: 36px; margin-bottom: 10px; cursor: pointer; user-select: none; display: inline-block; }
+    .pd-title { font-size: 24px; font-weight: 700; color: var(--text-1); background: transparent; border: none; outline: none; font-family: var(--font); width: 100%; }
+    .pd-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .meta-chip { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: var(--radius-sm); background: var(--bg-overlay); border: 1px solid var(--border); font-size: 12px; color: var(--text-2); cursor: pointer; transition: border-color .12s; position: relative; }
+    .meta-chip:hover { border-color: var(--accent); }
+    .meta-chip svg { width: 12px; height: 12px; }
+    .meta-chip-val { color: var(--text-1); font-weight: 500; }
+    .pd-body { flex: 1; overflow-y: auto; padding: 20px 28px 40px; display: flex; flex-direction: column; gap: 22px; }
+    .pd-sec-label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+    .pd-progress-big { display: flex; flex-direction: column; gap: 6px; }
+    .pd-progress-track { height: 8px; background: var(--bg-overlay); border-radius: 99px; overflow: hidden; }
+    .pd-progress-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width .4s; }
+    .pd-progress-nums { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-2); }
+    .pd-progress-inputs { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
+    .pd-progress-inputs input { width: 72px; height: 30px; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0 8px; font-family: var(--font); font-size: 13px; color: var(--text-1); outline: none; }
+    .pd-progress-inputs input:focus { border-color: var(--border-focus); }
+    .pd-textarea { width: 100%; min-height: 80px; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; font-family: var(--font); font-size: 13px; color: var(--text-1); outline: none; resize: vertical; line-height: 1.6; }
+    .pd-textarea:focus { border-color: var(--border-focus); }
+    .pd-checklist { display: flex; flex-direction: column; gap: 6px; }
+    .pd-check-item { display: flex; align-items: center; gap: 8px; padding: 2px 0; }
+    .pd-check-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .pd-check-text { font-size: 13px; color: var(--text-1); flex: 1; background: transparent; border: none; outline: none; font-family: var(--font); }
+    .pd-check-text.done { text-decoration: line-through; color: var(--text-3); }
+    .pd-check-del { opacity: 0; border: none; background: transparent; color: var(--text-3); cursor: pointer; font-size: 16px; line-height: 1; padding: 0 2px; }
+    .pd-check-item:hover .pd-check-del { opacity: 1; }
+    .pd-add-check { display: flex; gap: 8px; margin-top: 4px; }
+    .pd-add-check input { flex: 1; height: 28px; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0 8px; font-family: var(--font); font-size: 12px; color: var(--text-1); outline: none; }
+    .pd-files { display: flex; flex-direction: column; gap: 6px; }
+    .pd-file { display: flex; align-items: center; gap: 8px; padding: 7px 10px; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: border-color .12s; }
+    .pd-file:hover { border-color: var(--accent); }
+    .pd-file svg { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0; }
+    .pd-file-name { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pd-file-del { opacity: 0; border: none; background: transparent; color: var(--text-3); cursor: pointer; font-size: 16px; }
+    .pd-file:hover .pd-file-del { opacity: 1; }
+
+    /* mini dropdown */
+    .mini-dd { position: fixed; z-index: 900; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 4px; min-width: 160px; }
+    .mini-dd-item { padding: 7px 10px; border-radius: 5px; cursor: pointer; font-size: 13px; color: var(--text-1); transition: background .12s; display: flex; align-items: center; gap: 8px; }
+    .mini-dd-item:hover { background: var(--bg-hover); }
+    .mini-dd-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .mini-dd-sep { height: 1px; background: var(--border); margin: 3px 0; }
+
     /* TOPBAR */
     .topbar {
       height: 52px; flex-shrink: 0;
@@ -502,6 +893,10 @@
     <i data-lucide="eye-off"></i>
   </button>
   <div class="topbar-sep"></div>
+  <button class="icon-btn" id="btnWorkspace" onclick="toggleWorkspace()" title="Workspace">
+    <i data-lucide="layout-panel-left"></i>
+  </button>
+  <div class="topbar-sep"></div>
   <button class="icon-btn" onclick="openSettings()" title="Settings">
     <i data-lucide="settings"></i>
   </button>
@@ -738,6 +1133,134 @@
   </div>
 </div>
 
+
+<!-- ══════════════════════════════════════════════════════
+     WORKSPACE OVERLAY
+══════════════════════════════════════════════════════ -->
+<div class="workspace-overlay" id="workspaceOverlay">
+
+  <!-- Top bar -->
+  <div class="ws-topbar">
+    <button class="icon-btn" onclick="toggleWorkspace()" title="Back to Explorer">
+      <i data-lucide="arrow-left"></i>
+    </button>
+    <span style="font-size:14px;font-weight:600;color:var(--text-1);margin-left:4px;">Workspace</span>
+    <div class="ws-topbar-right">
+      <button class="icon-btn" onclick="wsNewPage()" title="New Note Page">
+        <i data-lucide="file-plus"></i>
+      </button>
+      <button class="icon-btn" onclick="boardNewProject()" title="New Project">
+        <i data-lucide="plus"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- View switch bar -->
+  <div class="ws-view-bar">
+    <div class="ws-view-tab active" id="tabBoard" onclick="switchWsView('board')">
+      <i data-lucide="layout-dashboard"></i> Board
+    </div>
+    <div class="ws-view-tab" id="tabTable" onclick="switchWsView('table')">
+      <i data-lucide="table-2"></i> Tabelle
+    </div>
+    <div class="ws-view-tab" id="tabNotes" onclick="switchWsView('notes')">
+      <i data-lucide="notebook"></i> Notes
+    </div>
+  </div>
+
+  <!-- Body: Board view -->
+  <div id="wsBoardView" style="flex:1;overflow:hidden;display:flex;">
+    <div class="board-view" id="boardView"></div>
+    <!-- Project detail panel -->
+    <div class="project-detail" id="projectDetail" style="display:none;"></div>
+  </div>
+
+  <!-- Body: Table view -->
+  <div id="wsTableView" style="flex:1;overflow:hidden;display:none;">
+    <div class="table-view" id="tableView"></div>
+  </div>
+
+  <!-- Body: Notes view (original workspace) -->
+  <div id="wsNotesView" style="flex:1;overflow:hidden;display:none;flex-direction:row;">
+    <div class="ws-sidebar">
+      <div class="ws-sidebar-top">
+        <div class="ws-sidebar-label">Pages</div>
+        <div id="wsPageList"></div>
+        <div class="ws-add-page" onclick="wsNewPage()">
+          <i data-lucide="plus"></i> New Page
+        </div>
+      </div>
+    </div>
+    <div class="ws-main" id="wsMain">
+      <div class="ws-empty" id="wsEmpty">
+        <i data-lucide="notebook"></i>
+        <p>No page selected</p>
+        <button onclick="wsNewPage()">Create first page</button>
+      </div>
+      <div class="ws-editor" id="wsEditor" style="display:none;">
+        <div class="ws-editor-header" id="wsEditorHeader">
+          <div class="ws-emoji-picker" id="wsPageEmoji" onclick="openEmojiPicker(event)">📄</div>
+          <textarea class="ws-page-title" id="wsPageTitle" placeholder="Untitled Page"
+            oninput="autoResizeTitle(this); wsPageTitleChanged()"
+            onkeydown="wsTitleKeydown(event)"></textarea>
+        </div>
+        <div class="ws-task-bar" id="wsTaskBar" style="display:none;">
+          <span style="font-size:12px;color:var(--text-2);font-weight:500;">Tasks:</span>
+          <button class="ws-filter-btn active" onclick="setTaskFilter('all',this)">All</button>
+          <button class="ws-filter-btn" onclick="setTaskFilter('open',this)">Open</button>
+          <button class="ws-filter-btn" onclick="setTaskFilter('done',this)">Done</button>
+          <span class="ws-task-count" id="wsTaskCount"></span>
+        </div>
+        <div class="ws-blocks" id="wsBlocks"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- project detail modal for file attach picker -->
+<div id="pdFilePicker" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:950;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;width:min(520px,94vw);max-height:65vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow);">
+    <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <span style="font-size:14px;font-weight:600;">Attach File</span>
+      <button onclick="document.getElementById('pdFilePicker').style.display='none'" style="border:none;background:transparent;color:var(--text-2);cursor:pointer;font-size:20px;">×</button>
+    </div>
+    <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-3);">Currenter Ordner: <span id="pdFilePickerPath"></span></div>
+    <div id="pdFilePickerList" style="flex:1;overflow-y:auto;padding:6px 0;"></div>
+  </div>
+</div>
+
+<!-- Block type menu (/ command) -->
+<div class="block-type-menu" id="blockTypeMenu"></div>
+
+<!-- Emoji picker popup -->
+<div class="emoji-popup" id="emojiPopup">
+  <input type="text" placeholder="Search…" id="emojiSearch" oninput="filterEmoji(this.value)"
+    style="width:100%;height:28px;background:var(--bg-overlay);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0 8px;font-family:var(--font);font-size:12px;color:var(--text-1);outline:none;"/>
+  <div class="emoji-grid" id="emojiGrid"></div>
+</div>
+
+<!-- File picker for linking (reuses current directory) -->
+<div id="fileLinkModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:800;backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);width:min(560px,92vw);max-height:70vh;display:flex;flex-direction:column;overflow:hidden;">
+    <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <span style="font-size:14px;font-weight:600;color:var(--text-1);">Link File</span>
+      <button onclick="document.getElementById('fileLinkModal').style.display='none'" style="width:28px;height:28px;border:none;border-radius:6px;background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;"><i data-lucide="x"></i></button>
+    </div>
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <input id="fileLinkSearch" type="text" placeholder="Enter path or choose from current folder…"
+        style="width:100%;height:32px;background:var(--bg-overlay);border:1px solid var(--border);border-radius:var(--radius);padding:0 10px;font-family:var(--font);font-size:13px;color:var(--text-1);outline:none;"
+        onfocus="this.style.borderColor='var(--border-focus)'" onblur="this.style.borderColor='var(--border)'"
+        onkeydown="if(event.key==='Enter')confirmFileLink(this.value)" />
+    </div>
+    <div id="fileLinkList" style="flex:1;overflow-y:auto;padding:8px 0;"></div>
+    <div style="padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;">
+      <button onclick="document.getElementById('fileLinkModal').style.display='none'" style="height:32px;padding:0 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;">Cancel</button>
+      <button onclick="confirmFileLink(document.getElementById('fileLinkSearch').value)" style="height:32px;padding:0 14px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:white;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;">Link</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="overlayClick(event)">
   <div class="modal">
@@ -756,6 +1279,8 @@
   <div class="ctx-sep"></div>
   <div class="ctx-it" id="ctxDownload"><i data-lucide="download"></i> Download</div>
   <div class="ctx-it" id="ctxBookmark"><i data-lucide="bookmark-plus"></i> Bookmark</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-it" id="ctxWorkspaceLink"><i data-lucide="link"></i> Link to Workspace</div>
   <div class="ctx-sep"></div>
   <div class="ctx-it" id="ctxCopyPath"><i data-lucide="copy"></i> Copy Path</div>
   <div class="ctx-it" id="ctxRename"><i data-lucide="pencil"></i> Rename</div>
@@ -838,6 +1363,7 @@ async function init(){
   rl();
   await loadPersisted();
   applySettings();
+  wsInit();
   applySidebarState();
   initResizePanels();
   renderCustomQuick();
@@ -888,7 +1414,7 @@ async function loadDrives(silent=false){
     const dl=document.getElementById('driveList');
     if(dl){
       dl.innerHTML='';
-      if(!drives.length){dl.innerHTML='<div style="padding:4px 14px;font-size:12px;color:var(--text-3)">Keine Laufwerke</div>';}
+      if(!drives.length){dl.innerHTML='<div style="padding:4px 14px;font-size:12px;color:var(--text-3)">Keine Drives</div>';}
       for(const dr of drives){
         const ico=dr.name.includes('System')?'hard-drive':dr.type==='mount'?'disc-3':'usb';
         const label=dr.name.replace(/[🔌💽📀]/g,'').trim();
@@ -1118,7 +1644,7 @@ async function loadPreview(item,modal=false){
       const txt=d.content.length>8000?d.content.substring(0,8000)+'\n…(truncated)':d.content;
       p.innerHTML=`<pre>${escH(txt)}</pre>`;
       if(modal){document.getElementById('modalTitle').textContent=item.name;document.getElementById('modalContent').textContent=d.content;const mb=document.querySelector('.modal-body');mb.innerHTML=`<pre>${escH(d.content)}</pre>`;document.getElementById('modalOverlay').classList.add('open');}
-    }else{p.innerHTML=`<span class="pane-empty">${escH(d.error||'Keine Vorschau')}</span>`;}
+    }else{p.innerHTML=`<span class="pane-empty">${escH(d.error||'Keine Preview')}</span>`;}
   }catch(e){p.innerHTML='<span class="pane-empty">Fehler</span>';}
 }
 function clearPreview(){document.getElementById('previewPane').innerHTML='<span class="pane-empty">Select a file…</span>';}
@@ -1217,13 +1743,13 @@ function addBmPath(p,name){
   bookmarks.push({path:p,name});
   localStorage.setItem('tfm-bm',JSON.stringify(bookmarks));
   persistNow('bookmarks', bookmarks);
-  loadBookmarks(); log('Lesezeichen: '+name,'ok');
+  loadBookmarks(); log('Bookmarks: '+name,'ok');
 }
 
 // STATUS
 function updStatus(){
   const items=getItems(),dirs=items.filter(i=>i.isDirectory).length,files=items.filter(i=>!i.isDirectory).length;
-  cm('stCount').textContent=`${items.length} Elemente · ${dirs} Ordner, ${files} Dateien`;
+  cm('stCount').textContent=`${items.length} Elemente · ${dirs} Ordner, ${files} Files`;
   cm('stSel').textContent='Nothing selected';
 }
 
@@ -1289,9 +1815,9 @@ function promptNew(mode) {
   document.getElementById('newMenu').style.display = 'none';
   promptMode = mode;
   promptTarget = null;
-  document.getElementById('promptTitle').textContent = mode === 'folder' ? 'Neuer Ordner' : 'Neue Datei';
-  document.getElementById('promptOkBtn').textContent = 'Erstellen';
-  document.getElementById('promptInput').value = mode === 'folder' ? 'Neuer Ordner' : 'Neue Datei.txt';
+  document.getElementById('promptTitle').textContent = mode === 'folder' ? 'New Folder' : 'New File';
+  document.getElementById('promptOkBtn').textContent = 'Create';
+  document.getElementById('promptInput').value = mode === 'folder' ? 'New Folder' : 'New File.txt';
   document.getElementById('promptOverlay').classList.add('open');
   setTimeout(() => { const i = document.getElementById('promptInput'); i.focus(); i.select(); }, 50);
 }
@@ -1299,8 +1825,8 @@ function promptNew(mode) {
 function promptRename(item) {
   promptMode = 'rename';
   promptTarget = item;
-  document.getElementById('promptTitle').textContent = 'Umbenennen';
-  document.getElementById('promptOkBtn').textContent = 'Umbenennen';
+  document.getElementById('promptTitle').textContent = 'Rename';
+  document.getElementById('promptOkBtn').textContent = 'Rename';
   document.getElementById('promptInput').value = item.name;
   document.getElementById('promptOverlay').classList.add('open');
   setTimeout(() => {
@@ -1352,6 +1878,7 @@ async function deleteItem(item) {
 
 // CONTEXT MENU new handlers
 cm('ctxRename').onclick = () => { if (ctxItem) promptRename(ctxItem); cm('ctxMenu').classList.remove('open'); };
+cm('ctxWorkspaceLink').onclick = () => { wsLinkFileFromCtx(); cm('ctxMenu').classList.remove('open'); };
 cm('ctxDelete').onclick  = () => { if (ctxItem) deleteItem(ctxItem); cm('ctxMenu').classList.remove('open'); };
 
 
@@ -1573,7 +2100,7 @@ async function qaDrop(e, el, qaKey) {
     ? el.dataset.customPath
     : (QA_FOLDER_MAP[qaKey] ? QA_FOLDER_MAP[qaKey]() : null);
 
-  if (!destDir) { log('Ziel unbekannt', 'err'); return; }
+  if (!destDir) { log('Target unbekannt', 'err'); return; }
 
   const src = bpath(dragItem.name);
   log(`Kopiere "${dragItem.name}" nach ${destDir.split(/[\\/]/).pop()}…`, 'info');
@@ -1607,7 +2134,7 @@ function renderCustomQuick() {
     el.ondragleave = () => qaDragLeave(el);
     el.ondrop      = e => { e.preventDefault(); el.classList.remove('qa-drop-over'); if(!dragItem)return; const src=bpath(dragItem.name); fetch('/api/copy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({srcPath:src,destDir:item.path})}).then(r=>r.json()).then(d=>{ if(d.success)log('Kopiert nach '+item.name,'ok'); else log('Fehler: '+d.error,'err'); }); };
     // right-click to remove
-    el.oncontextmenu = e => { e.preventDefault(); if(confirm(`"${item.name}" aus Schnellzugriff entfernen?`)){ customQuick.splice(idx,1); localStorage.setItem('tfm-custom-quick',JSON.stringify(customQuick)); persistNow('customQuick', customQuick); renderCustomQuick(); } };
+    el.oncontextmenu = e => { e.preventDefault(); if(confirm(`"${item.name}" aus Quick Access entfernen?`)){ customQuick.splice(idx,1); localStorage.setItem('tfm-custom-quick',JSON.stringify(customQuick)); persistNow('customQuick', customQuick); renderCustomQuick(); } };
     list.appendChild(el);
   });
   rl();
@@ -1615,12 +2142,12 @@ function renderCustomQuick() {
 
 function addCurrentToQuick() {
   const name = currentPath.split(/[\\/]/).pop() || currentPath;
-  if (customQuick.some(x => x.path === currentPath)) { log('Bereits im Schnellzugriff', 'warn'); return; }
+  if (customQuick.some(x => x.path === currentPath)) { log('Bereits im Quick Access', 'warn'); return; }
   customQuick.push({ path: currentPath, name });
   localStorage.setItem('tfm-custom-quick', JSON.stringify(customQuick));
   persistNow('customQuick', customQuick);
   renderCustomQuick();
-  log('Schnellzugriff: ' + name, 'ok');
+  log('Quick Access: ' + name, 'ok');
 }
 
 
@@ -1803,7 +2330,7 @@ let bmCtxIdx = null;
 let bmEditMode = null; // 'rename' | 'icon'
 
 const BM_ICON_SUGGESTIONS = [
-  { icon:'bookmark',    label:'Standard' },
+  { icon:'bookmark',    label:'Default' },
   { icon:'star',        label:'Star'     },
   { icon:'heart',       label:'Heart'    },
   { icon:'folder',      label:'Folder'   },
@@ -1870,7 +2397,7 @@ function openBmEdit(mode, idx) {
   const iconRow = document.getElementById('bmEditIconRow');
 
   if (mode === 'rename') {
-    document.getElementById('bmEditTitle').textContent = 'Umbenennen';
+    document.getElementById('bmEditTitle').textContent = 'Rename';
     nameRow.style.display = 'flex';
     iconRow.style.display = 'none';
     document.getElementById('bmEditNameInput').value = bm.name;
@@ -1939,11 +2466,11 @@ function confirmBmEdit() {
     const name = document.getElementById('bmEditNameInput').value.trim();
     if (!name) return;
     bookmarks[bmCtxIdx].name = name;
-    log('Lesezeichen umbenannt: ' + name, 'ok');
+    log('Bookmarks umbenannt: ' + name, 'ok');
   } else {
     const icon = document.getElementById('bmEditIconInput').value.trim();
     bookmarks[bmCtxIdx].icon = icon || '';
-    log('Icon set: ' + (icon || 'Standard'), 'ok');
+    log('Icon set: ' + (icon || 'Default'), 'ok');
   }
   localStorage.setItem('tfm-bm', JSON.stringify(bookmarks));
   persistNow('bookmarks', bookmarks);
@@ -1958,6 +2485,1196 @@ function closeBmEdit() {
 function bmEditOverlayClick(e) {
   if (e.target === document.getElementById('bmEditOverlay')) closeBmEdit();
 }
+
+
+// ══════════════════════════════════════════════════════════════════════════
+// WORKSPACE — Notion-style editor
+// ══════════════════════════════════════════════════════════════════════════
+
+// ── State ─────────────────────────────────────────────────────────────────
+let wsData = { pages: [], projects: [] };  // loaded from notes.json
+let wsCurrentPageId = null;
+let wsTaskFilter = 'all';
+let wsSaveTimer = null;
+let wsLinkCallback = null;           // callback when file link is confirmed
+let btmFocusIdx = 0;                 // block type menu keyboard index
+
+// ── Open / Close ──────────────────────────────────────────────────────────
+function toggleWorkspace() {
+  const el = document.getElementById('workspaceOverlay');
+  const open = el.classList.toggle('open');
+  document.getElementById('btnWorkspace').classList.toggle('active', open);
+  if (open) { wsLoad(); switchWsView(wsCurrentView||'board'); rl(); }
+}
+
+// ── Persistence ───────────────────────────────────────────────────────────
+async function wsLoad() {
+  try {
+    const r = await fetch('/api/notes/list');
+    const d = await r.json();
+    if (d.success) {
+      wsData = d.data;
+      if (!wsData.projects) wsData.projects = [];
+      if (!wsData.pages) wsData.pages = [];
+    }
+  } catch(e) {}
+  wsRenderSidebar();
+  if (wsCurrentPageId) {
+    const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+    if (page) wsOpenPage(wsCurrentPageId);
+    else wsCurrentPageId = null;
+  }
+  if (!wsCurrentPageId && wsData.pages.length) wsOpenPage(wsData.pages[0].id);
+  wsShowEmpty(!wsCurrentPageId);
+}
+
+function wsSave() {
+  clearTimeout(wsSaveTimer);
+  // Debounce rapid typing, but also flush immediately on first change
+  wsSaveTimer = setTimeout(() => wsFlushSave(), 800);
+}
+
+async function wsFlushSave() {
+  if (!wsData.pages.length && !wsCurrentPageId) return;
+  const body = JSON.stringify(wsData);
+  // Try sendBeacon first (survives page close)
+  try {
+    const ok = navigator.sendBeacon('/api/notes/save', new Blob([body], { type: 'application/json' }));
+    if (ok) return;
+  } catch(e) {}
+  // Fallback to fetch
+  try {
+    await fetch('/api/notes/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body
+    });
+  } catch(e) { console.warn('wsSave failed:', e); }
+}
+
+// Flush immediately before page unloads so nothing is lost
+window.addEventListener('beforeunload', () => {
+  clearTimeout(wsSaveTimer);
+  wsFlushSave();
+});
+
+// ── Sidebar ───────────────────────────────────────────────────────────────
+function wsRenderSidebar() {
+  const list = document.getElementById('wsPageList');
+  list.innerHTML = '';
+  wsData.pages.forEach(page => {
+    const el = document.createElement('div');
+    el.className = 'ws-page-item' + (page.id === wsCurrentPageId ? ' active' : '');
+    el.dataset.id = page.id;
+    el.innerHTML = `
+      <span class="page-emoji">${page.emoji || '📄'}</span>
+      <span class="page-name">${escH(page.title || 'Untitled')}</span>
+      <button class="page-del" onclick="wsDeletePage('${page.id}',event)" title="Delete"><i data-lucide="x"></i></button>
+    `;
+    el.onclick = (e) => { if (!e.target.closest('.page-del')) wsOpenPage(page.id); };
+    list.appendChild(el);
+  });
+  rl();
+}
+
+function wsShowEmpty(show) {
+  document.getElementById('wsEmpty').style.display  = show ? 'flex' : 'none';
+  document.getElementById('wsEditor').style.display = show ? 'none' : 'flex';
+}
+
+// ── Pages ─────────────────────────────────────────────────────────────────
+function wsNewPage() {
+  const id = 'pg_' + Date.now();
+  const page = { id, title: '', emoji: '📄', blocks: [] };
+  wsData.pages.push(page);
+  wsSave();
+  wsOpenPage(id);
+}
+
+function wsOpenPage(id) {
+  wsCurrentPageId = id;
+  const page = wsData.pages.find(p => p.id === id);
+  if (!page) return;
+  wsShowEmpty(false);
+  wsRenderSidebar();
+  // Title
+  const titleEl = document.getElementById('wsPageTitle');
+  titleEl.value = page.title || '';
+  autoResizeTitle(titleEl);
+  // Emoji
+  document.getElementById('wsPageEmoji').textContent = page.emoji || '📄';
+  // Render blocks
+  wsRenderBlocks();
+  wsUpdateTaskBar();
+}
+
+function wsDeletePage(id, e) {
+  e.stopPropagation();
+  const page = wsData.pages.find(p => p.id === id);
+  if (!confirm(`Seite Delete "${page?.title || 'Untitled'}"?`)) return;
+  wsData.pages = wsData.pages.filter(p => p.id !== id);
+  if (wsCurrentPageId === id) {
+    wsCurrentPageId = wsData.pages[0]?.id || null;
+    if (wsCurrentPageId) wsOpenPage(wsCurrentPageId);
+    else wsShowEmpty(true);
+  }
+  wsRenderSidebar();
+  wsSave();
+}
+
+function wsPageTitleChanged() {
+  const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+  if (!page) return;
+  page.title = document.getElementById('wsPageTitle').value;
+  wsRenderSidebar();
+  wsSave();
+}
+
+function wsTitleKeydown(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    // focus first block or add one
+    const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+    if (!page) return;
+    if (!page.blocks.length) wsAddBlock('text');
+    else focusBlock(page.blocks[0].id);
+  }
+}
+
+function autoResizeTitle(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+// ── Emoji picker ──────────────────────────────────────────────────────────
+const EMOJIS = ['📄','📝','📋','📌','📍','🗒️','🗓️','📅','✅','☑️','🎯','🚀','💡','⭐','🔥','❤️','🎨','🎵','🎬','📸','💻','🔧','🔑','🏠','🌍','🌱','📊','💼','🎮','📚','🧠','💬','📢','🔔','⚡','🌙','☀️','🍀','🦋','🐉'];
+
+function openEmojiPicker(e) {
+  e.stopPropagation();
+  const pop = document.getElementById('emojiPopup');
+  pop.classList.toggle('open');
+  if (pop.classList.contains('open')) {
+    const rect = e.target.getBoundingClientRect();
+    pop.style.left = rect.left + 'px';
+    pop.style.top  = (rect.bottom + 4) + 'px';
+    renderEmojis(EMOJIS);
+    document.getElementById('emojiSearch').value = '';
+    document.getElementById('emojiSearch').focus();
+  }
+}
+
+function renderEmojis(list) {
+  const grid = document.getElementById('emojiGrid');
+  grid.innerHTML = '';
+  list.forEach(em => {
+    const btn = document.createElement('span');
+    btn.className = 'emoji-btn'; btn.textContent = em;
+    btn.onclick = () => setPageEmoji(em);
+    grid.appendChild(btn);
+  });
+}
+
+function filterEmoji(q) {
+  renderEmojis(q ? EMOJIS.filter(e => e.includes(q)) : EMOJIS);
+}
+
+function setPageEmoji(em) {
+  const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+  if (!page) return;
+  page.emoji = em;
+  document.getElementById('wsPageEmoji').textContent = em;
+  document.getElementById('emojiPopup').classList.remove('open');
+  wsRenderSidebar();
+  wsSave();
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#emojiPopup') && !e.target.closest('#wsPageEmoji'))
+    document.getElementById('emojiPopup').classList.remove('open');
+  if (!e.target.closest('#blockTypeMenu') && !e.target.closest('.block-text'))
+    document.getElementById('blockTypeMenu').classList.remove('open');
+});
+
+// ── Block rendering ───────────────────────────────────────────────────────
+function wsRenderBlocks() {
+  const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+  const container = document.getElementById('wsBlocks');
+  container.innerHTML = '';
+  if (!page) return;
+
+  let visible = page.blocks;
+  if (wsTaskFilter !== 'all') {
+    visible = page.blocks.map(b => {
+      if (b.type !== 'task') return b;
+      if (wsTaskFilter === 'open' && b.checked) return null;
+      if (wsTaskFilter === 'done' && !b.checked) return null;
+      return b;
+    }).filter(Boolean);
+  }
+
+  visible.forEach(block => {
+    const el = wsRenderBlock(block, page);
+    if (el) container.appendChild(el);
+  });
+
+  // trailing add-block hint
+  const hint = document.createElement('div');
+  hint.style.cssText = 'padding:8px 0;color:var(--text-3);font-size:13px;cursor:text;';
+  hint.textContent = '+ Add block or / for commands';
+  hint.onclick = () => wsAddBlock('text');
+  container.appendChild(hint);
+  rl();
+}
+
+function wsRenderBlock(block, page) {
+  const wrap = document.createElement('div');
+  wrap.className = 'ws-block'; wrap.dataset.id = block.id;
+
+  // drag handle
+  const handle = document.createElement('div');
+  handle.className = 'block-handle';
+  handle.innerHTML = '<i data-lucide="grip-vertical"></i>';
+  handle.draggable = true;
+  handle.ondragstart = e => { e.dataTransfer.setData('ws-block', block.id); wrap.style.opacity = '.4'; };
+  handle.ondragend   = () => { wrap.style.opacity = '1'; };
+  wrap.ondragover    = e => { e.preventDefault(); wrap.style.borderTop = '2px solid var(--accent)'; };
+  wrap.ondragleave   = () => { wrap.style.borderTop = ''; };
+  wrap.ondrop        = e => {
+    e.preventDefault(); wrap.style.borderTop = '';
+    const srcId = e.dataTransfer.getData('ws-block');
+    wsMoveBlock(srcId, block.id);
+  };
+  wrap.appendChild(handle);
+
+  if (block.type === 'divider') {
+    const hr = document.createElement('hr'); hr.className = 'block-divider';
+    wrap.appendChild(hr);
+    addBlockContextMenu(wrap, block, page);
+    return wrap;
+  }
+
+  if (block.type === 'filelink') {
+    const a = document.createElement('div');
+    a.className = 'block-filelink';
+    const fname = block.path ? block.path.split(/[/\\]/).pop() : 'Datei';
+    a.innerHTML = `<i data-lucide="file"></i>
+      <div class="block-filelink-info">
+        <div class="block-filelink-name">${escH(fname)}</div>
+        <div class="block-filelink-path">${escH(block.path || '')}</div>
+      </div>
+      <span class="block-filelink-open">Öffnen →</span>`;
+    a.onclick = () => { if (block.path) fetch('/api/open?path=' + encodeURIComponent(block.path)); };
+    wrap.appendChild(a);
+    addBlockContextMenu(wrap, block, page);
+    return wrap;
+  }
+
+  if (block.type === 'pagelink') {
+    const linked = wsData.pages.find(p => p.id === block.pageId);
+    const div = document.createElement('div');
+    div.className = 'block-pagelink';
+    div.innerHTML = `<span class="block-pagelink-emoji">${linked?.emoji || '📄'}</span>
+      <span class="block-pagelink-name">${escH(linked?.title || 'Unknown Page')}</span>`;
+    div.onclick = () => { if (linked) wsOpenPage(linked.id); };
+    wrap.appendChild(div);
+    addBlockContextMenu(wrap, block, page);
+    return wrap;
+  }
+
+  if (block.type === 'task') {
+    const taskWrap = document.createElement('div');
+    taskWrap.className = 'block-task-wrap';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.className = 'task-cb'; cb.checked = !!block.checked;
+    cb.onchange = () => { block.checked = cb.checked; wsUpdateTaskBar(); wsSave(); wsRenderBlocks(); };
+    taskWrap.appendChild(cb);
+    const textEl = makeEditableBlock(block, page, 'Task…');
+    textEl.classList.add('task-text');
+    if (block.checked) textEl.style.textDecoration = 'line-through';
+    if (block.checked) textEl.style.color = 'var(--text-3)';
+    taskWrap.appendChild(textEl);
+    wrap.appendChild(taskWrap);
+    addBlockContextMenu(wrap, block, page);
+    return wrap;
+  }
+
+  // text / heading / quote
+  const textEl = makeEditableBlock(block, page,
+    block.type === 'h1' ? 'Heading 1' :
+    block.type === 'h2' ? 'Heading 2' :
+    block.type === 'h3' ? 'Heading 3' :
+    block.type === 'quote' ? 'Quote…' : 'Write something or / for commands…'
+  );
+  if (block.type === 'h1') textEl.classList.add('block-h1');
+  else if (block.type === 'h2') textEl.classList.add('block-h2');
+  else if (block.type === 'h3') textEl.classList.add('block-h3');
+  else if (block.type === 'quote') textEl.classList.add('block-quote');
+  wrap.appendChild(textEl);
+  addBlockContextMenu(wrap, block, page);
+  return wrap;
+}
+
+function makeEditableBlock(block, page, placeholder) {
+  const el = document.createElement('div');
+  el.className = 'block-text';
+  el.contentEditable = true;
+  el.setAttribute('data-placeholder', placeholder);
+  el.innerHTML = block.content || '';
+  el.oninput = () => {
+    block.content = el.innerHTML;
+    wsSave();
+  };
+  el.onkeydown = e => wsBlockKeydown(e, el, block, page);
+  el.dataset.blockId = block.id;
+  return el;
+}
+
+function focusBlock(id) {
+  const el = document.querySelector(`[data-block-id="${id}"]`);
+  if (el) { el.focus(); placeCaretAtEnd(el); }
+}
+
+function placeCaretAtEnd(el) {
+  const range = document.createRange();
+  const sel = window.getSelection();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+// ── Block keyboard handling ───────────────────────────────────────────────
+function wsBlockKeydown(e, el, block, page) {
+  const btm = document.getElementById('blockTypeMenu');
+
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    btm.classList.remove('open');
+    const idx = page.blocks.findIndex(b => b.id === block.id);
+    wsAddBlock('text', idx + 1);
+    return;
+  }
+
+  if (e.key === 'Backspace' && !el.textContent.trim() && !el.innerHTML.trim()) {
+    e.preventDefault();
+    btm.classList.remove('open');
+    wsDeleteBlock(block.id, page);
+    return;
+  }
+
+  if (e.key === '/') {
+    setTimeout(() => openBlockTypeMenu(el, block, page), 10);
+    return;
+  }
+
+  if (e.key === 'Escape') { btm.classList.remove('open'); return; }
+
+  if (btm.classList.contains('open')) {
+    const items = btm.querySelectorAll('.btm-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); btmFocusIdx = (btmFocusIdx+1)%items.length; items.forEach((i,x)=>i.classList.toggle('focused',x===btmFocusIdx)); return; }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); btmFocusIdx = (btmFocusIdx-1+items.length)%items.length; items.forEach((i,x)=>i.classList.toggle('focused',x===btmFocusIdx)); return; }
+    if (e.key === 'Enter')     { e.preventDefault(); items[btmFocusIdx]?.click(); return; }
+  }
+
+  // Tab: indent (do nothing special, just prevent leaving)
+  if (e.key === 'Tab') { e.preventDefault(); }
+}
+
+// ── Block type menu (/) ───────────────────────────────────────────────────
+const BLOCK_TYPES = [
+  { type:'text',     icon:'pilcrow',      label:'Text',          desc:'Simple paragraph' },
+  { type:'h1',       icon:'heading-1',    label:'Heading 1', desc:'Large heading' },
+  { type:'h2',       icon:'heading-2',    label:'Heading 2', desc:'Medium heading' },
+  { type:'h3',       icon:'heading-3',    label:'Heading 3', desc:'Small heading' },
+  { type:'task',     icon:'check-square', label:'Task',       desc:'Checkbox with text' },
+  { type:'quote',    icon:'quote',        label:'Quote',         desc:'Highlighted quote' },
+  { type:'divider',  icon:'minus',        label:'Divider',    desc:'Horizontal line' },
+  { type:'filelink', icon:'file-symlink', label:'File Link',    desc:'Link to a file' },
+  { type:'pagelink', icon:'link',         label:'Pages-Link',   desc:'Link to another page' },
+];
+
+function openBlockTypeMenu(el, block, page) {
+  const btm = document.getElementById('blockTypeMenu');
+  const rect = el.getBoundingClientRect();
+  btm.style.left = rect.left + 'px';
+  btm.style.top  = (rect.bottom + 4) + 'px';
+  btm.innerHTML  = '';
+  btmFocusIdx    = 0;
+
+  BLOCK_TYPES.forEach((bt, i) => {
+    const item = document.createElement('div');
+    item.className = 'btm-item' + (i===0?' focused':'');
+    item.innerHTML = `
+      <div class="btm-item-ico"><i data-lucide="${bt.icon}"></i></div>
+      <div><div class="btm-item-label">${bt.label}</div><div class="btm-item-desc">${bt.desc}</div></div>
+    `;
+    item.onclick = () => {
+      btm.classList.remove('open');
+      // Remove the typed "/" from content
+      block.content = (block.content || '').replace(/\/$/, '');
+      el.innerHTML  = block.content;
+      // Change type or insert new block
+      if (bt.type === 'filelink') { openFileLinkModal(block, page); return; }
+      if (bt.type === 'pagelink') { openPageLinkModal(block, page); return; }
+      block.type = bt.type;
+      wsSave();
+      wsRenderBlocks();
+      setTimeout(() => focusBlock(block.id), 50);
+    };
+    btm.appendChild(item);
+  });
+  btm.classList.add('open');
+  rl();
+}
+
+// ── Block CRUD ────────────────────────────────────────────────────────────
+function wsAddBlock(type, afterIdx) {
+  const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+  if (!page) return;
+  const block = { id: 'bl_' + Date.now(), type, content: '' };
+  if (afterIdx !== undefined) page.blocks.splice(afterIdx, 0, block);
+  else page.blocks.push(block);
+  wsSave();
+  wsRenderBlocks();
+  wsUpdateTaskBar();
+  setTimeout(() => focusBlock(block.id), 50);
+  return block;
+}
+
+function wsDeleteBlock(id, page) {
+  const idx = page.blocks.findIndex(b => b.id === id);
+  if (idx === -1) return;
+  page.blocks.splice(idx, 1);
+  wsSave();
+  wsRenderBlocks();
+  wsUpdateTaskBar();
+  // Focus previous block
+  if (idx > 0) setTimeout(() => focusBlock(page.blocks[idx-1]?.id), 50);
+}
+
+function wsMoveBlock(srcId, targetId) {
+  const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+  if (!page) return;
+  const si = page.blocks.findIndex(b => b.id === srcId);
+  const ti = page.blocks.findIndex(b => b.id === targetId);
+  if (si === -1 || ti === -1 || si === ti) return;
+  const [moved] = page.blocks.splice(si, 1);
+  page.blocks.splice(ti, 0, moved);
+  wsSave();
+  wsRenderBlocks();
+}
+
+function addBlockContextMenu(wrap, block, page) {
+  wrap.oncontextmenu = e => {
+    e.preventDefault();
+    // show delete / change type options in a mini menu
+    const existing = document.getElementById('blockCtxMenu');
+    if (existing) existing.remove();
+    const menu = document.createElement('div');
+    menu.id = 'blockCtxMenu';
+    menu.style.cssText = `position:fixed;left:${Math.min(e.clientX,innerWidth-180)}px;top:${Math.min(e.clientY,innerHeight-120)}px;z-index:700;background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:4px;min-width:160px;`;
+    const items = [
+      { label:'Delete', icon:'trash-2', color:'var(--red)', action: () => wsDeleteBlock(block.id, page) },
+      { label:'Duplicate', icon:'copy', action: () => {
+        const copy = { ...block, id: 'bl_' + Date.now() };
+        const idx = page.blocks.findIndex(b => b.id === block.id);
+        page.blocks.splice(idx+1, 0, copy);
+        wsSave(); wsRenderBlocks();
+      }},
+    ];
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'ctx-it';
+      if (item.color) el.style.color = item.color;
+      el.innerHTML = `<i data-lucide="${item.icon}" style="width:14px;height:14px;${item.color?'color:'+item.color:''}"></i> ${item.label}`;
+      el.onclick = () => { menu.remove(); item.action(); };
+      menu.appendChild(el);
+    });
+    document.body.appendChild(menu);
+    rl();
+    setTimeout(() => document.addEventListener('click', () => menu.remove(), { once: true }), 10);
+  };
+}
+
+// ── File link modal ───────────────────────────────────────────────────────
+let fileLinkTarget = null;
+
+function openFileLinkModal(block, page) {
+  fileLinkTarget = { block, page };
+  const modal = document.getElementById('fileLinkModal');
+  modal.style.display = 'flex';
+  document.getElementById('fileLinkSearch').value = currentPath || '';
+  // populate with current directory items
+  const list = document.getElementById('fileLinkList');
+  list.innerHTML = '';
+  allItems.filter(i => !i.isDirectory).forEach(item => {
+    const fp = (currentPath.replace(/[\/\\]+$/,'')) + '\\' + item.name;
+    const el = document.createElement('div');
+    el.className = 'ctx-it';
+    el.innerHTML = `<i data-lucide="file" style="width:14px;height:14px;color:var(--text-3);"></i> <span>${escH(item.name)}</span>`;
+    el.onclick = () => confirmFileLink(fp);
+    list.appendChild(el);
+  });
+  // Also show folders to navigate
+  allItems.filter(i => i.isDirectory).forEach(item => {
+    const fp = (currentPath.replace(/[\/\\]+$/,'')) + '\\' + item.name;
+    const el = document.createElement('div');
+    el.className = 'ctx-it';
+    el.style.color = 'var(--accent)';
+    el.innerHTML = `<i data-lucide="folder" style="width:14px;height:14px;color:var(--accent);"></i> <span>${escH(item.name)}</span>`;
+    el.onclick = () => { document.getElementById('fileLinkSearch').value = fp; };
+    list.appendChild(el);
+  });
+  rl();
+}
+
+function confirmFileLink(fp) {
+  if (!fp || !fileLinkTarget) return;
+  const { block, page } = fileLinkTarget;
+  block.type = 'filelink';
+  block.path = fp;
+  block.content = '';
+  fileLinkTarget = null;
+  document.getElementById('fileLinkModal').style.display = 'none';
+  wsSave();
+  wsRenderBlocks();
+}
+
+// ── Page link modal ───────────────────────────────────────────────────────
+function openPageLinkModal(block, page) {
+  // Simple: show existing pages as choices
+  const others = wsData.pages.filter(p => p.id !== wsCurrentPageId);
+  if (!others.length) { alert('Keine anderen Pages vorhanden. Erstelle zuerst weitere Pages.'); return; }
+  const existing = document.getElementById('pageLinkPicker');
+  if (existing) existing.remove();
+  const picker = document.createElement('div');
+  picker.id = 'pageLinkPicker';
+  picker.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:900;background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:16px;min-width:280px;';
+  picker.innerHTML = `<div style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:12px;">Select Page</div>`;
+  others.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'ctx-it';
+    el.innerHTML = `<span style="font-size:16px;">${p.emoji||'📄'}</span> ${escH(p.title||'Untitled')}`;
+    el.onclick = () => {
+      block.type = 'pagelink'; block.pageId = p.id; block.content = '';
+      picker.remove();
+      wsSave(); wsRenderBlocks();
+    };
+    picker.appendChild(el);
+  });
+  const cancel = document.createElement('button');
+  cancel.textContent = 'Cancel';
+  cancel.style.cssText = 'margin-top:10px;width:100%;height:30px;border:1px solid var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font-family:var(--font);cursor:pointer;';
+  cancel.onclick = () => picker.remove();
+  picker.appendChild(cancel);
+  document.body.appendChild(picker);
+}
+
+// ── Task filter bar ───────────────────────────────────────────────────────
+function wsUpdateTaskBar() {
+  const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+  if (!page) return;
+  const tasks = page.blocks.filter(b => b.type === 'task');
+  const bar   = document.getElementById('wsTaskBar');
+  bar.style.display = tasks.length ? 'flex' : 'none';
+  if (tasks.length) {
+    const done = tasks.filter(t => t.checked).length;
+    document.getElementById('wsTaskCount').textContent = `${done}/${tasks.length} erledigt`;
+  }
+}
+
+function setTaskFilter(f, btn) {
+  wsTaskFilter = f;
+  document.querySelectorAll('.ws-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  wsRenderBlocks();
+}
+
+// ── Context-menu link to current file ─────────────────────────────────────
+// This adds a "Link to Workspace" option to the file context menu
+function wsLinkFileFromCtx() {
+  if (!ctxItem || ctxItem.isDirectory) return;
+  const fp = bpath(ctxItem.name);
+  // open workspace if not already
+  const overlay = document.getElementById('workspaceOverlay');
+  if (!overlay.classList.contains('open')) toggleWorkspace();
+  // ensure a page is open
+  if (!wsCurrentPageId) { wsNewPage(); }
+  setTimeout(() => {
+    const page = wsData.pages.find(p => p.id === wsCurrentPageId);
+    if (!page) return;
+    const block = { id: 'bl_' + Date.now(), type: 'filelink', path: fp, content: '' };
+    page.blocks.push(block);
+    wsSave();
+    wsRenderBlocks();
+    log('File linked: ' + ctxItem.name, 'ok');
+  }, 300);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+// Called from main init()
+function wsInit() {
+  // pre-load data silently
+  fetch('/api/notes/list').then(r=>r.json()).then(d=>{ if(d.success) wsData=d.data; }).catch(()=>{});
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════
+// BOARD / PROJEKTE
+// ══════════════════════════════════════════════════════════════════════════
+
+// ── State ─────────────────────────────────────────────────────────────────
+let boardProjects = [];   // loaded/saved inside wsData.projects
+let wsCurrentView = 'board';
+let boardCurrentProjectId = null;
+let boardDragId = null;
+
+const BOARD_STATUSES = [
+  { id:'todo',    label:'Not Started', dot:'#666',    bg:'rgba(100,100,100,.12)' },
+  { id:'wip',     label:'In Progress', dot:'#58a6ff', bg:'rgba(88,166,255,.12)'  },
+  { id:'done',    label:'Done',       dot:'#3fb950', bg:'rgba(63,185,80,.12)'   },
+];
+const PRIORITIES = ['Low','Medium','High'];
+const PRIORITY_CLASS = { Low:'badge-niedrig', Medium:'badge-mittel', High:'badge-hoch' };
+
+// ── View switcher ─────────────────────────────────────────────────────────
+function switchWsView(view) {
+  wsCurrentView = view;
+  document.getElementById('wsBoardView').style.display  = view==='board' ? 'flex' : 'none';
+  document.getElementById('wsTableView').style.display  = view==='table' ? 'flex' : 'none';
+  const nv = document.getElementById('wsNotesView');
+  nv.style.display = view==='notes' ? 'flex' : 'none';
+  ['tabBoard','tabTable','tabNotes'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById('tab'+view.charAt(0).toUpperCase()+view.slice(1)).classList.add('active');
+  if (view==='board') boardRender();
+  if (view==='table') tableRender();
+}
+
+// ── Data helpers ──────────────────────────────────────────────────────────
+function boardLoad() {
+  boardProjects = wsData.projects || [];
+}
+function boardSave() {
+  wsData.projects = boardProjects;
+  wsSave();
+}
+function boardGetProject(id) { return boardProjects.find(p=>p.id===id); }
+
+function boardNewProject(statusId) {
+  // Switch to board view first
+  if (wsCurrentView !== 'board') switchWsView('board');
+  const id = 'prj_'+Date.now();
+  const proj = {
+    id, emoji:'📋', title:'New Project',
+    status: statusId || 'todo',
+    priority:'Medium', customer:'',
+    startDate:'', endDate:'',
+    startVal:0, endVal:100, currentVal:0,
+    description:'', checklist:[], files:[],
+  };
+  boardProjects.push(proj);
+  boardSave();
+  boardRender();
+  setTimeout(()=>openProjectDetail(id), 50);
+}
+
+function boardProgress(proj) {
+  if (proj.endVal === proj.startVal) return proj.status==='done' ? 100 : 0;
+  const pct = Math.round(((proj.currentVal - proj.startVal) / (proj.endVal - proj.startVal)) * 100);
+  return Math.max(0, Math.min(100, pct));
+}
+
+function boardProgressColor(pct) {
+  if (pct >= 100) return '#3fb950';
+  if (pct >= 50)  return '#58a6ff';
+  return '#58a6ff';
+}
+
+// ── Board render ──────────────────────────────────────────────────────────
+function boardRender() {
+  boardLoad();
+  const container = document.getElementById('boardView');
+  container.innerHTML = '';
+
+  BOARD_STATUSES.forEach(status => {
+    const projs = boardProjects.filter(p=>p.status===status.id);
+    const col = document.createElement('div');
+    col.className = 'board-column';
+
+    // Header
+    col.innerHTML = `
+      <div class="board-col-header">
+        <span class="board-col-dot" style="background:${status.dot}"></span>
+        <span class="board-col-title">${status.label}</span>
+        <span class="board-col-count">${projs.length}</span>
+      </div>`;
+
+    // Cards wrapper
+    const cards = document.createElement('div');
+    cards.className = 'board-cards';
+    cards.dataset.status = status.id;
+
+    projs.forEach(proj => {
+      const card = buildBoardCard(proj, status);
+      cards.appendChild(card);
+    });
+
+    // Drop zone at bottom of column
+    const drop = document.createElement('div');
+    drop.className = 'board-col-drop';
+    drop.dataset.status = status.id;
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+    drop.addEventListener('drop', e => {
+      e.preventDefault(); drop.classList.remove('drag-over');
+      if (boardDragId) {
+        const p = boardGetProject(boardDragId);
+        if (p) { p.status = status.id; boardSave(); boardRender(); }
+      }
+    });
+
+    cards.appendChild(drop);
+    col.appendChild(cards);
+
+    // Add card button
+    const addBtn = document.createElement('div');
+    addBtn.className = 'board-add-card';
+    addBtn.innerHTML = '<i data-lucide="plus"></i> Create Project';
+    addBtn.onclick = () => boardNewProject(status.id);
+    col.appendChild(addBtn);
+    container.appendChild(col);
+  });
+
+  // Add column button
+  const addCol = document.createElement('div');
+  addCol.className = 'board-add-col';
+  addCol.innerHTML = '<button class="board-add-col-btn"><i data-lucide="plus"></i> Add Status</button>';
+  addCol.querySelector('button').onclick = () => boardAddStatus();
+  container.appendChild(addCol);
+  rl();
+}
+
+function buildBoardCard(proj, status) {
+  const pct = boardProgress(proj);
+  const card = document.createElement('div');
+  card.className = 'board-card';
+  card.draggable = true;
+  card.dataset.id = proj.id;
+  card.addEventListener('dragstart', () => { boardDragId = proj.id; card.classList.add('dragging'); });
+  card.addEventListener('dragend', () => { boardDragId = null; card.classList.remove('dragging'); });
+  card.addEventListener('dragover', e => e.preventDefault());
+  card.addEventListener('drop', e => {
+    e.preventDefault(); e.stopPropagation();
+    if (boardDragId && boardDragId !== proj.id) {
+      const src = boardGetProject(boardDragId);
+      if (src) { src.status = proj.status; boardSave(); boardRender(); }
+    }
+  });
+
+  const badgeClass = PRIORITY_CLASS[proj.priority] || 'badge-mittel';
+  const dateStr = proj.endDate ? `<span class="card-date"><i data-lucide="calendar"></i>${proj.endDate}</span>` : '';
+  const custStr = proj.customer ? `<span class="card-customer">${escH(proj.customer)}</span>` : '';
+
+  card.innerHTML = `
+    <div class="board-card-top">
+      <span class="board-card-icon">${proj.emoji||'📋'}</span>
+      <span class="board-card-name">${escH(proj.title||'Untitled')}</span>
+      <button class="board-card-dots" onclick="boardCardMenu(event,'${proj.id}')"><i data-lucide="more-horizontal"></i></button>
+    </div>
+    <div class="progress-row">
+      <span class="progress-pct">${pct} %</span>
+      <div class="progress-track" style="flex:1"><div class="progress-fill" style="width:${pct}%;background:${boardProgressColor(pct)}"></div></div>
+    </div>
+    <div class="board-card-meta">
+      <span class="badge ${badgeClass}">${escH(proj.priority)}</span>
+      ${dateStr}${custStr}
+    </div>`;
+
+  card.onclick = e => { if (!e.target.closest('.board-card-dots')) openProjectDetail(proj.id); };
+  return card;
+}
+
+function boardCardMenu(e, id) {
+  e.stopPropagation();
+  closeMiniDD();
+  const dd = document.createElement('div');
+  dd.className = 'mini-dd'; dd.id = 'miniDD';
+  dd.style.left = Math.min(e.clientX, innerWidth-180)+'px';
+  dd.style.top  = Math.min(e.clientY, innerHeight-120)+'px';
+  dd.innerHTML = `
+    <div class="mini-dd-item" onclick="openProjectDetail('${id}');closeMiniDD()"><i data-lucide="pencil" style="width:14px;height:14px"></i> Edit</div>
+    <div class="mini-dd-sep"></div>
+    <div class="mini-dd-item" style="color:var(--red)" onclick="boardDeleteProject('${id}');closeMiniDD()"><i data-lucide="trash-2" style="width:14px;height:14px;color:var(--red)"></i> Delete</div>`;
+  document.body.appendChild(dd);
+  rl();
+  setTimeout(()=>document.addEventListener('click', closeMiniDD, {once:true}), 10);
+}
+
+function closeMiniDD() {
+  const d = document.getElementById('miniDD');
+  if (d) d.remove();
+}
+
+function boardDeleteProject(id) {
+  if (!confirm('Project delete?')) return;
+  boardProjects = boardProjects.filter(p=>p.id!==id);
+  boardSave();
+  if (boardCurrentProjectId===id) closeProjectDetail();
+  boardRender();
+  if (wsCurrentView==='table') tableRender();
+}
+
+function boardAddStatus() {
+  const name = prompt('Name für den neuen Status:','');
+  if (!name) return;
+  alert('Status-Spalten können aktuell noch nicht dynamisch persistiert werden — Feature kommt in einem Update!');
+}
+
+// ── Table render ──────────────────────────────────────────────────────────
+function tableRender() {
+  boardLoad();
+  const container = document.getElementById('tableView');
+  container.innerHTML = '';
+  const tbl = document.createElement('table');
+  tbl.innerHTML = `<thead><tr>
+    <th>Project name</th><th>Status</th><th>Start Date</th><th>End Date</th>
+    <th>Priority</th><th>Customer</th><th>Start Value</th><th>End Value</th><th>Progress</th>
+  </tr></thead>`;
+  const tbody = document.createElement('tbody');
+
+  boardProjects.forEach(proj => {
+    const pct = boardProgress(proj);
+    const status = BOARD_STATUSES.find(s=>s.id===proj.status)||BOARD_STATUSES[0];
+    const badgeClass = PRIORITY_CLASS[proj.priority]||'badge-mittel';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="td-name"><span>${proj.emoji||'📋'}</span><strong>${escH(proj.title||'Untitled')}</strong></div></td>
+      <td><span class="badge" style="background:${status.bg};color:${status.dot}">● ${status.label}</span></td>
+      <td>${proj.startDate||'—'}</td>
+      <td>${proj.endDate||'—'}</td>
+      <td><span class="badge ${badgeClass}">${escH(proj.priority||'Medium')}</span></td>
+      <td>${escH(proj.customer||'')}</td>
+      <td style="text-align:right">${proj.startVal??0}</td>
+      <td style="text-align:right">${proj.endVal??100}</td>
+      <td><div class="td-prog">${pct} %
+        <div class="progress-track" style="flex:1"><div class="progress-fill" style="width:${pct}%;background:${boardProgressColor(pct)}"></div></div>
+      </div></td>`;
+    tr.onclick = () => {
+      if (wsCurrentView!=='table') return;
+      // Show detail panel in board area temporarily
+      switchWsView('board');
+      setTimeout(()=>openProjectDetail(proj.id), 50);
+    };
+    tbody.appendChild(tr);
+  });
+
+  // Add row
+  const addTr = document.createElement('tr');
+  addTr.className = 'table-add-row';
+  addTr.innerHTML = '<td colspan="9">+ Create Project</td>';
+  addTr.onclick = () => boardNewProject();
+  tbody.appendChild(addTr);
+
+  tbl.appendChild(tbody);
+  container.appendChild(tbl);
+  rl();
+}
+
+// ── Project detail panel ──────────────────────────────────────────────────
+function openProjectDetail(id) {
+  boardCurrentProjectId = id;
+  const proj = boardGetProject(id);
+  if (!proj) return;
+  const panel = document.getElementById('projectDetail');
+  panel.style.display = 'flex';
+  panel.style.flexDirection = 'column';
+  renderProjectDetail(proj);
+  rl();
+}
+
+function closeProjectDetail() {
+  document.getElementById('projectDetail').style.display = 'none';
+  boardCurrentProjectId = null;
+}
+
+function renderProjectDetail(proj) {
+  const pct = boardProgress(proj);
+  const status = BOARD_STATUSES.find(s=>s.id===proj.status)||BOARD_STATUSES[0];
+  const panel = document.getElementById('projectDetail');
+
+  panel.innerHTML = `
+    <!-- topbar -->
+    <div class="pd-topbar">
+      <span style="font-size:12px;color:var(--text-2);flex:1">Project</span>
+      <button class="icon-btn" onclick="closeProjectDetail()" title="Close"><i data-lucide="x"></i></button>
+    </div>
+
+    <!-- header -->
+    <div class="pd-header">
+      <div class="pd-emoji" onclick="pdPickEmoji(event,'${proj.id}')">${proj.emoji||'📋'}</div>
+      <input class="pd-title" value="${escH(proj.title||'')}" placeholder="Project name"
+        oninput="pdField('${proj.id}','title',this.value)" />
+      <div class="pd-meta">
+        <!-- Status chip -->
+        <div class="meta-chip" onclick="pdStatusDD(event,'${proj.id}')">
+          <i data-lucide="activity"></i>
+          <span style="color:${status.dot}">●</span>
+          <span class="meta-chip-val">${status.label}</span>
+        </div>
+        <!-- Priority chip -->
+        <div class="meta-chip" onclick="pdPriorityDD(event,'${proj.id}')">
+          <i data-lucide="flag"></i>
+          <span class="meta-chip-val badge ${PRIORITY_CLASS[proj.priority]||'badge-mittel'}" style="background:transparent;padding:0">${escH(proj.priority||'Medium')}</span>
+        </div>
+        <!-- Start date chip -->
+        <div class="meta-chip" title="Start Date">
+          <i data-lucide="calendar"></i>
+          <input type="date" value="${proj.startDate||''}"
+            style="background:transparent;border:none;outline:none;font-family:var(--font);font-size:12px;color:var(--text-1);cursor:pointer;width:110px;"
+            onchange="pdField('${proj.id}','startDate',this.value)" />
+        </div>
+        <!-- End date chip -->
+        <div class="meta-chip" title="End Date">
+          <i data-lucide="calendar-x"></i>
+          <input type="date" value="${proj.endDate||''}"
+            style="background:transparent;border:none;outline:none;font-family:var(--font);font-size:12px;color:var(--text-1);cursor:pointer;width:110px;"
+            onchange="pdField('${proj.id}','endDate',this.value)" />
+        </div>
+        <!-- Customer chip -->
+        <div class="meta-chip" title="Customer">
+          <i data-lucide="user"></i>
+          <input type="text" value="${escH(proj.customer||'')}" placeholder="Customer"
+            style="background:transparent;border:none;outline:none;font-family:var(--font);font-size:12px;color:var(--text-1);width:100px;"
+            oninput="pdField('${proj.id}','customer',this.value)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div class="pd-body">
+
+      <!-- Progress -->
+      <div>
+        <div class="pd-sec-label">Progress</div>
+        <div class="pd-progress-big">
+          <div class="pd-progress-track">
+            <div class="pd-progress-fill" id="pdProgFill" style="width:${pct}%"></div>
+          </div>
+          <div class="pd-progress-nums">
+            <span>${pct} %</span><span>${proj.currentVal??0} / ${proj.endVal??100}</span>
+          </div>
+          <div class="pd-progress-inputs">
+            <label style="font-size:11px;color:var(--text-3)">Start</label>
+            <input type="number" value="${proj.startVal??0}" onchange="pdProgressField('${proj.id}','startVal',+this.value)" />
+            <label style="font-size:11px;color:var(--text-3)">Current</label>
+            <input type="number" value="${proj.currentVal??0}" onchange="pdProgressField('${proj.id}','currentVal',+this.value)" id="pdCurInput" />
+            <label style="font-size:11px;color:var(--text-3)">Target</label>
+            <input type="number" value="${proj.endVal??100}" onchange="pdProgressField('${proj.id}','endVal',+this.value)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <div class="pd-sec-label">Project Information</div>
+        <textarea class="pd-textarea" placeholder="Project description…"
+          oninput="pdField('${proj.id}','description',this.value)">${escH(proj.description||'')}</textarea>
+      </div>
+
+      <!-- Checklist / Action Items -->
+      <div>
+        <div class="pd-sec-label">Action Items</div>
+        <div class="pd-checklist" id="pdChecklist"></div>
+        <div class="pd-add-check">
+          <input type="text" id="pdCheckInput" placeholder="Add action…"
+            onkeydown="if(event.key==='Enter'){pdAddCheck('${proj.id}',this.value);this.value='';}" />
+          <button onclick="const inp=document.getElementById('pdCheckInput');pdAddCheck('${proj.id}',inp.value);inp.value='';"
+            style="height:28px;padding:0 10px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:white;font-size:12px;cursor:pointer;font-family:var(--font);">+</button>
+        </div>
+      </div>
+
+      <!-- File attachments -->
+      <div>
+        <div class="pd-sec-label">Files</div>
+        <div class="pd-files" id="pdFiles"></div>
+        <button onclick="openPdFilePicker('${proj.id}')"
+          style="margin-top:6px;height:30px;padding:0 12px;border:1px dashed var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-3);font-family:var(--font);font-size:12px;cursor:pointer;transition:all .12s;"
+          onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+          onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-3)'">
+          + Attach File
+        </button>
+      </div>
+
+    </div>`;
+
+  renderPdChecklist(proj);
+  renderPdFiles(proj);
+  rl();
+}
+
+// ── Detail field helpers ──────────────────────────────────────────────────
+function pdField(id, key, val) {
+  const proj = boardGetProject(id);
+  if (!proj) return;
+  proj[key] = val;
+  boardSave();
+  if (key==='title'||key==='status'||key==='priority'||key==='emoji') {
+    boardRender();
+    if (wsCurrentView==='table') tableRender();
+  }
+}
+
+function pdProgressField(id, key, val) {
+  const proj = boardGetProject(id);
+  if (!proj) return;
+  proj[key] = val;
+  const pct = boardProgress(proj);
+  const fill = document.getElementById('pdProgFill');
+  if (fill) { fill.style.width = pct+'%'; fill.parentElement.nextElementSibling.querySelector('span').textContent = pct+' %'; }
+  boardSave();
+  boardRender();
+}
+
+function pdPickEmoji(e, id) {
+  // Reuse existing emoji picker
+  const proj = boardGetProject(id);
+  if (!proj) return;
+  openEmojiPicker(e);
+  // Temporarily override setPageEmoji
+  window._pdEmojiTarget = id;
+}
+
+// Patch setPageEmoji to also handle project emojis
+const _origSetPageEmoji = window.setPageEmoji;
+window.setPageEmoji = function(em) {
+  if (window._pdEmojiTarget) {
+    const proj = boardGetProject(window._pdEmojiTarget);
+    if (proj) { proj.emoji = em; boardSave(); if(boardCurrentProjectId===window._pdEmojiTarget) renderProjectDetail(proj); boardRender(); }
+    window._pdEmojiTarget = null;
+    document.getElementById('emojiPopup').classList.remove('open');
+  } else {
+    _origSetPageEmoji(em);
+  }
+};
+
+// Status dropdown
+function pdStatusDD(e, id) {
+  e.stopPropagation(); closeMiniDD();
+  const dd = document.createElement('div');
+  dd.className = 'mini-dd'; dd.id = 'miniDD';
+  dd.style.left = Math.min(e.clientX, innerWidth-180)+'px';
+  dd.style.top  = Math.min(e.clientY+8, innerHeight-140)+'px';
+  BOARD_STATUSES.forEach(s => {
+    const item = document.createElement('div');
+    item.className = 'mini-dd-item';
+    item.innerHTML = `<span class="mini-dd-dot" style="background:${s.dot}"></span>${s.label}`;
+    item.onclick = () => { pdField(id,'status',s.id); closeMiniDD(); openProjectDetail(id); };
+    dd.appendChild(item);
+  });
+  document.body.appendChild(dd); rl();
+  setTimeout(()=>document.addEventListener('click',closeMiniDD,{once:true}),10);
+}
+
+// Priority dropdown
+function pdPriorityDD(e, id) {
+  e.stopPropagation(); closeMiniDD();
+  const dd = document.createElement('div');
+  dd.className = 'mini-dd'; dd.id = 'miniDD';
+  dd.style.left = Math.min(e.clientX, innerWidth-180)+'px';
+  dd.style.top  = Math.min(e.clientY+8, innerHeight-120)+'px';
+  PRIORITIES.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'mini-dd-item';
+    item.innerHTML = `<span class="badge ${PRIORITY_CLASS[p]}">${p}</span>`;
+    item.onclick = () => { pdField(id,'priority',p); closeMiniDD(); openProjectDetail(id); };
+    dd.appendChild(item);
+  });
+  document.body.appendChild(dd); rl();
+  setTimeout(()=>document.addEventListener('click',closeMiniDD,{once:true}),10);
+}
+
+// ── Checklist ─────────────────────────────────────────────────────────────
+function renderPdChecklist(proj) {
+  const container = document.getElementById('pdChecklist');
+  if (!container) return;
+  container.innerHTML = '';
+  (proj.checklist||[]).forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'pd-check-item';
+    const cb = document.createElement('input');
+    cb.type='checkbox'; cb.checked=!!item.done;
+    cb.onchange=()=>{ item.done=cb.checked; const t=row.querySelector('.pd-check-text'); t.classList.toggle('done',item.done); boardSave(); boardRender(); };
+    const txt = document.createElement('input');
+    txt.type='text'; txt.className='pd-check-text'+(item.done?' done':'');
+    txt.value=item.text||''; txt.oninput=()=>{ item.text=txt.value; boardSave(); };
+    const del = document.createElement('button');
+    del.className='pd-check-del'; del.textContent='×';
+    del.onclick=()=>{ proj.checklist.splice(idx,1); boardSave(); renderPdChecklist(proj); };
+    row.appendChild(cb); row.appendChild(txt); row.appendChild(del);
+    container.appendChild(row);
+  });
+}
+
+function pdAddCheck(id, text) {
+  text = (text||'').trim(); if(!text) return;
+  const proj = boardGetProject(id); if(!proj) return;
+  if (!proj.checklist) proj.checklist=[];
+  proj.checklist.push({text, done:false});
+  boardSave(); renderPdChecklist(proj);
+  boardRender();
+}
+
+// ── File attachments ──────────────────────────────────────────────────────
+function renderPdFiles(proj) {
+  const container = document.getElementById('pdFiles');
+  if (!container) return;
+  container.innerHTML = '';
+  (proj.files||[]).forEach((f, idx) => {
+    const row = document.createElement('div');
+    row.className = 'pd-file';
+    const fname = f.split(/[/\\]/).pop();
+    row.innerHTML = `<i data-lucide="file"></i><span class="pd-file-name">${escH(fname)}</span><button class="pd-file-del" title="Entfernen">×</button>`;
+    row.onclick = e => { if(!e.target.closest('.pd-file-del')) fetch('/api/open?path='+encodeURIComponent(f)); };
+    row.querySelector('.pd-file-del').onclick = e => { e.stopPropagation(); proj.files.splice(idx,1); boardSave(); renderPdFiles(proj); };
+    container.appendChild(row);
+  });
+  rl();
+}
+
+function openPdFilePicker(projId) {
+  const picker = document.getElementById('pdFilePicker');
+  picker.style.display = 'flex';
+  document.getElementById('pdFilePickerPath').textContent = currentPath||'';
+  const list = document.getElementById('pdFilePickerList');
+  list.innerHTML = '';
+  allItems.forEach(item => {
+    const fp = (currentPath||'').replace(/[\/\\]+$/,'') + '\\' + item.name;
+    const el = document.createElement('div');
+    el.className = 'ctx-it';
+    el.style.color = item.isDirectory ? 'var(--accent)' : '';
+    el.innerHTML = `<i data-lucide="${item.isDirectory?'folder':'file'}" style="width:14px;height:14px;"></i> ${escH(item.name)}`;
+    el.onclick = () => {
+      if (item.isDirectory) return;
+      const proj = boardGetProject(projId);
+      if (!proj) return;
+      if (!proj.files) proj.files=[];
+      if (!proj.files.includes(fp)) { proj.files.push(fp); boardSave(); renderPdFiles(proj); }
+      picker.style.display='none';
+    };
+    list.appendChild(el);
+  });
+  rl();
+}
+
+// ── patch wsLoad to also load projects ────────────────────────────────────
+const _origWsLoad = window.wsLoad;
+window.wsLoad = async function() {
+  await _origWsLoad();
+  boardLoad();
+  if (wsCurrentView==='board') boardRender();
+  if (wsCurrentView==='table') tableRender();
+};
+
 
 setView('list');
 initHome();
