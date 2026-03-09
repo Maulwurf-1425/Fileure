@@ -34,6 +34,24 @@ if (!fs.existsSync(STORAGE_FILE)) {
 }
 
 
+
+const NOTES_FILE = path.join(__dirname, 'notes.json');
+
+function readNotes() {
+  try {
+    if (fs.existsSync(NOTES_FILE)) return JSON.parse(fs.readFileSync(NOTES_FILE, 'utf8'));
+  } catch(e) { console.warn('notes.json read error:', e.message); }
+  return { pages: [] };
+}
+function writeNotes(data) {
+  try { fs.writeFileSync(NOTES_FILE, JSON.stringify(data, null, 2), 'utf8'); return true; }
+  catch(e) { console.warn('notes.json write error:', e.message); return false; }
+}
+if (!fs.existsSync(NOTES_FILE)) {
+  writeNotes({ pages: [] });
+  console.log('notes.json created:', NOTES_FILE);
+}
+
 function getMimeType(ext) {
   const types = {
     '.html': 'text/html', '.css': 'text/css', '.js': 'application/javascript',
@@ -331,6 +349,40 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: ok }));
       } catch(e) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: e.message }));
+      }
+    });
+    return;
+  }
+
+
+  // API: Get all notes/pages
+  if (pathname === '/api/notes/list') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, data: readNotes() }));
+    return;
+  }
+
+  // API: Save full notes data (accepts both fetch JSON and sendBeacon octet-stream)
+  if (pathname === '/api/notes/save') {
+    let chunks = [];
+    req.on('data', d => chunks.push(d));
+    req.on('end', () => {
+      try {
+        const body = Buffer.concat(chunks).toString('utf8');
+        if (!body.trim()) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, note: 'empty body' }));
+          return;
+        }
+        const data = JSON.parse(body);
+        const ok = writeNotes(data);
+        console.log(`[notes] saved ${data.pages?.length || 0} pages`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: ok }));
+      } catch(e) {
+        console.warn('[notes] save error:', e.message);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, error: e.message }));
       }
